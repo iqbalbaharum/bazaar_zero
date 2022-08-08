@@ -1,0 +1,13 @@
+{
+  "name": "bazaar-zero",
+  "version": "1.0.0",
+  "description": "Bazaar Zero",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "workspaces": ["client", "smart-contract"]
+}
