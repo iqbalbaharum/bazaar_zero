@@ -4,6 +4,7 @@
 /node_modules
 /client/node_modules
 /smart-contract/node_modules
+/services/*/node_modules
 
 /.pnp
 .pnp.js

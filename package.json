@@ -9,5 +9,5 @@
   "author": "",
   "license": "ISC",
   "private": true,
-  "workspaces": ["client", "smart-contract"]
+  "workspaces": ["client", "smart-contract", "services"]
 }

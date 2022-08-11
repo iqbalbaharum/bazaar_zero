@@ -1,10 +1,8 @@
-.App {
-  text-align: center;
-}
+@import "~normalize.css";
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App {
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -22,17 +20,4 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
