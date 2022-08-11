@@ -4,6 +4,8 @@ import {H1, Button} from '@blueprintjs/core'
 import { Container, Row, Col } from 'react-grid-system';
 
 import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+
 import { useState, useEffect } from 'react';
 
 import AssetBox from '../Components/AssetBox'
@@ -14,7 +16,17 @@ const MyAssets = () => {
   const [address, setAddress] = useState("")
 
   useEffect(() => {
-    const providerOptions = {};
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          rpc: {
+            137: "https://rpc-mainnet.maticvigil.com/",
+          },
+          network: "matic",
+        },
+      },
+    };
 
     const newWeb3Modal = new Web3Modal({
       cacheProvider: true, // very important
