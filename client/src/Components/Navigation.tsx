@@ -11,7 +11,9 @@ const Navigation = () => {
       <NavbarGroup align={Alignment.RIGHT}>
         <NavbarHeading>Bazaar Zero</NavbarHeading>
         <NavbarDivider />
-        <Button className={Classes.MINIMAL} text="Shelves" onClick={() => navigate('/')} />
+        <Button intent="success" text="Account" onClick={() => navigate('/node')} />
+        <NavbarDivider />
+        <Button className={Classes.MINIMAL} text="Shelves" onClick={() => navigate('/shelves')} />
         <Button className={Classes.MINIMAL} text="My Assets" onClick={() => navigate('/assets')}/>
       </NavbarGroup>
     </Navbar>

@@ -7,6 +7,7 @@ import Navigation from './Components/Navigation'
 
 import MyAssets from './Pages/MyAssets'
 import Shelves from './Pages/Shelves'
+import NodeAccount from './Pages/NodeAccount'
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
       <Router>
         <Navigation />
         <Routes>
-          <Route path="/" element={<Shelves/>} />
+          <Route path="/node" element={<NodeAccount/>} />
+          <Route path="/shelves" element={<Shelves/>} />
           <Route path="/assets" element={<MyAssets/>} />
         </Routes>
       </Router>

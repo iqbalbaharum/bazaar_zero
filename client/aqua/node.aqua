@@ -1,0 +1,4 @@
+func getNodeProducts(peerId: PeerId, relayPeerId: PeerId):
+  on peerId via relayPeerId:
+  -- retrieve node products
+  -- return products

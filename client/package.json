@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^4.8.0",
+    "@fluencelabs/fluence": "^0.23.4",
+    "@fluencelabs/fluence-network-environment": "^1.0.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -24,10 +26,13 @@
     "web3modal": "^1.9.8"
   },
   "scripts": {
+    "postinstall": "copy-marine public",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "compile-aqua": "aqua -i ./aqua/ -o ./src/_aqua",
+    "watch-aqua": "chokidar \"**/*.aqua\" -c \"npm run compile-aqua\""
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +56,8 @@
     ]
   },
   "devDependencies": {
+    "@fluencelabs/aqua": "^0.7.4-338",
+    "@fluencelabs/aqua-lib": "^0.5.2",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
