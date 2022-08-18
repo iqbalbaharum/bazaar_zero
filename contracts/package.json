@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile-aqua": "aqua --import . -i ./aqua/ -o ./src/_aqua",
-    "start": "node -r ts-node/register index.ts",
+    "start": "node -r dotenv/config -r ts-node/register index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen-proof": "node -r ts-node/register scripts/gen_proof.ts"
   },

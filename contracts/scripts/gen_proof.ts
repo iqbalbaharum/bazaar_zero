@@ -9,7 +9,7 @@ import Web3 from 'web3'
 import { generate_proof, is_member } from '../src/_aqua/semaphore';
 
 import abiWrapped from "../artifacts/contracts/AssetWrapper.sol/AssetWrapper.json"
-const pk = "0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6"
+const pk = process.env.SELLER_PK
 
 const main = async () => {
     // each compiled aqua function require a connected client
@@ -17,11 +17,11 @@ const main = async () => {
         connectTo: krasnodar[0],
         defaultTtlMs: 15000
      });
-    const web3 = new Web3("http://127.0.0.1:8545" as string)
+    const web3 = new Web3(process.env.ETH_RPC_URL_HTTP as string)
     const acc = web3.eth.accounts.wallet.add( pk as string)
     console.log({acc})
 
-    const contract = new web3.eth.Contract(abiWrapped.abi as any, "0x0165878A594ca255338adfa4d48449f69242Eb8F")
+    const contract = new web3.eth.Contract(abiWrapped.abi as any, process.env.ASSET_WRAPPER)
 
     const subscriptionName = ethers.utils.formatBytes32String("bazaar zero")
     const groupId = BigInt(ethers.utils.solidityKeccak256(['bytes32'], [subscriptionName])) >> BigInt(8)

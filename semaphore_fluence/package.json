@@ -7,7 +7,7 @@
     "prestart": "npm run compile-aqua",
     "prebuild": "npm run compile-aqua",
     "postinstall": "copy-marine public",
-    "start": "node -r ts-node/register index.ts",
+    "start": "node -r dotenv/config -r ts-node/register index.ts",
     "test": "jest --setupFiles dotenv/config",
     "build": "tsc",
     "compile-aqua": "aqua --import . -i ./aqua/ -o ./src/_aqua",
