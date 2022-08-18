@@ -32,6 +32,7 @@ const main = async () => {
     await contract.methods.initializeBundle(acc.address, groupId, proof.byteSignal,
       proof.fullProof.publicSignals.nullifierHash, proof.solidityProof).send({
       from: acc.address,
+      gasPrice: 500000,
       gas: 5000000
     })
 
