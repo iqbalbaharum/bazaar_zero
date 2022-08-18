@@ -57,7 +57,7 @@ export class SemaphoreService implements ISemaphoreServiceDef {
           contract.methods.addMember(groupId, identityCommitment).send({
             from: process.env.ETH_PUBLIC_KEY,
             to: process.env.ASSET_WRAPPER_NFT,
-            gas: 1000000
+            gas: 500000
           })
 
         }
