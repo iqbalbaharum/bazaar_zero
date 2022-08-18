@@ -1,0 +1,38 @@
+data Proof:
+  pi_a: ?[]string
+  pi_b: ?[][]string
+  pi_c: ?[]string
+  protocol: ?string
+  curve: ?string
+
+data PublicSignals:
+  merkleRoot: string
+  nullifierHash: string
+  signalHash: string
+  externalNullifier: string
+
+data FullProof:
+  proof: Proof
+  publicSignals: PublicSignals
+
+data AddMember:
+  byteSignal: string
+  fullProof: FullProof
+  solidityProof: []string
+
+const PEER ?= "12D3KooWEF8ddP67Zg6mRZgH6WkDccPSxsQHV4jGeH7fNerW8qSs"
+const RELAY ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
+
+service ISemaphoreService("semaphoreservice"):
+  add_member(message: string) -> AddMember
+  is_member(message: string) -> bool
+
+func generate_proof(message: string) -> AddMember:
+  on PEER via RELAY:
+    proofs <- ISemaphoreService.add_member(message)
+  <- proofs
+
+func is_member(message: string) -> bool:
+  on PEER via RELAY:
+    resp <- ISemaphoreService.is_member(message)
+  <- resp
