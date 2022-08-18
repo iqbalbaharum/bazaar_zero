@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "0xsequence": "^0.40.5",
     "@blueprintjs/core": "^4.8.0",
     "@fluencelabs/fluence": "^0.23.4",
     "@fluencelabs/fluence-network-environment": "^1.0.13",

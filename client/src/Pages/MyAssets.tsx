@@ -41,7 +41,6 @@ const MyAssets = () => {
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
     const userAddress = await web3.eth.getAccounts()
-    console.log(userAddress)
     setAddress(userAddress[0])
   }
 

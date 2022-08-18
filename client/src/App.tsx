@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
@@ -9,7 +9,15 @@ import MyAssets from './Pages/MyAssets'
 import Shelves from './Pages/Shelves'
 import NodeAccount from './Pages/NodeAccount'
 
+import { Fluence } from '@fluencelabs/fluence';
+import { krasnodar } from '@fluencelabs/fluence-network-environment';
+
 function App() {
+
+  useEffect(() => {
+    // Fluence.start({ connectTo: krasnodar[0] });
+  })
+
   return (
     <div className="App">
       <Router>
