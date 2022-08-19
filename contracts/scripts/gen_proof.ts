@@ -29,10 +29,21 @@ const main = async () => {
     const proof = await generate_proof(acc.address)
     console.log({proof})
 
-    await contract.methods.initializeBundle(acc.address, groupId, proof.byteSignal,
-      proof.fullProof.publicSignals.nullifierHash, proof.solidityProof).send({
+    const gasPrice = await web3.eth.getGasPrice();
+    const gas_price = Math.round(parseInt(gasPrice) * 1.2)
+
+    const initBundle = contract.methods.initializeBundle(acc.address, groupId, proof.byteSignal,
+      proof.fullProof.publicSignals.nullifierHash, proof.solidityProof)
+    var gas_estimate = await initBundle.estimateGas({ from: acc.address })
+    gas_estimate = Math.round(gas_estimate * 1.2); 
+      
+    console.log({gas_price, gas_estimate})
+
+    initBundle.send({
       from: acc.address,
-      gas: 1000000
+      // to: process.env.ASSET_WRAPPER,
+      gas: web3.utils.toHex(gas_estimate), 
+      gasPrice:  web3.utils.toHex(gas_price)
     })
 
     const balanceOf = await contract.methods.balanceOf(acc.address).call()

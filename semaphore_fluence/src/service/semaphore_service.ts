@@ -54,10 +54,20 @@ export class SemaphoreService implements ISemaphoreServiceDef {
         if (identityJson.indexOf(identityCommitment.toString()) < 0) {
           identityJson = [...identityJson, identityCommitment.toString()]
 
-          contract.methods.addMember(groupId, identityCommitment).send({
+          const gasPrice = await web3.eth.getGasPrice();
+          const gas_price = Math.round(parseInt(gasPrice) * 1.2)
+
+          const addMember = contract.methods.addMember(groupId, identityCommitment)
+          var gas_estimate = await addMember.estimateGas({ from: process.env.ETH_PUBLIC_KEY })
+          gas_estimate = Math.round(gas_estimate * 1.2);
+          
+          console.log({gas_price, gas_estimate})
+
+          addMember.send({
             from: process.env.ETH_PUBLIC_KEY,
-            to: process.env.ASSET_WRAPPER_NFT,
-            gas: 500000
+            // to: process.env.ASSET_WRAPPER_NFT,
+            gas: web3.utils.toHex(gas_estimate), 
+            gasPrice:  web3.utils.toHex(gas_price)
           })
 
         }
