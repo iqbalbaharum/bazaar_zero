@@ -59,7 +59,7 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
       const gasPrice = await provider.getGasPrice()
       const gas_price = Math.round(gasPrice.toNumber() * 1.2)
 
-      const initBundle = contract
+      const initBundle = await contract
                             .initializeBundle(
                               sequenceWallet.account, 
                               groupId,

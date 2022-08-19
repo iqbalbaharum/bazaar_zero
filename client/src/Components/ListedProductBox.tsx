@@ -11,7 +11,7 @@ const ListedProductBox: React.FC<AssetDataProp> = (prop: AssetDataProp) => {
   return (
     <Card elevation={Elevation.FOUR} className="z-box" interactive={true} onClick={prop.onClick}>
       <div className='z-box-content'>
-        asd
+        {prop.description}
       </div>
       <div className="z-box-footer">
         {prop.title}

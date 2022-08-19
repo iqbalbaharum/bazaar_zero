@@ -26,7 +26,7 @@
 .z-box {
   border-radius: 16px;
   height: 250px;
-  width: 250px;
+  width: 100%;
   display: flex;
 }
 
@@ -74,6 +74,10 @@
 
 .mt-5 {
   padding-top: 5px
+}
+
+.mt-xl {
+  margin-top: 20px;
 }
 
 .mb-5 {

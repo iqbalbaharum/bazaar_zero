@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
 
-import { H1 } from '@blueprintjs/core'
 import { Container, Row, Col } from 'react-grid-system';
 import ListedProductBox from '../Components/ListedProductBox';
 import CreateBoxButton from '../Components/CreateBoxButton';
@@ -16,6 +15,7 @@ const MyShop = () => {
   const [createDialogOpen, isCreateDialogOpened] = useState(false)
   const [nfts, setNFTs] = useState<any[]>([])
   const [loaded, setLoaded] = useState(false)
+  const [selectedBundleId, setSelectedBundleId] = useState('')
 
   const sequenceWallet = useSequence()
 
@@ -44,7 +44,12 @@ const MyShop = () => {
     isOpen(false)
   }
 
-  const toggleDrawer = () => {
+  const toggleDrawer = (bundleId: string) => {
+    if(!open) {
+      console.log(bundleId)
+      setSelectedBundleId(bundleId)
+    }
+
     isOpen(!open)
   }
 
@@ -52,34 +57,26 @@ const MyShop = () => {
     isCreateDialogOpened(!createDialogOpen)
   }
 
-  const ProductList = () => {
-
-    return (
-      <Col sm={4}>
-        {nfts.map((nft) => {
-          return (
-            <ListedProductBox 
-              title={nft.tokenMetadata?.name as string}
-              description={nft.tokenMetadata?.description as string}
-              onClick={toggleDrawer} />
-          )
-        })}
-      </Col>
-    )
-  }
-
   return (
     <Container>
-      <Row style={{ height: '80px' }} align="center"><H1>My Shelves</H1></Row>
-      <Row>
-        <CreateBoxButton onClick={toggleCreateDialog} />
+      <Row className="mt-xl">
+        <Col sm={3}>
+          <CreateBoxButton onClick={toggleCreateDialog} />
+        </Col>
+        
+        {nfts.map((nft) => 
+          (
+            <Col sm={3}>
+            <ListedProductBox
+              title={nft.tokenMetadata?.name as string}
+              description={`Bundle #${nft.tokenID}`}
+              onClick={() => toggleDrawer(nft.tokenID)} />
+            </Col>
+          )
+        )}
+
         <CreateBoxDialog isOpen={createDialogOpen} handleClose={toggleCreateDialog} />
-        <ListedProductBox 
-              title="Title"
-              description="Bundle #1"
-              onClick={toggleDrawer} />
-        <ProductList />
-        <WalletItemDrawer handleClose={handleClose} isOpen={open} />
+        <WalletItemDrawer handleClose={handleClose} isOpen={open} selectedBundleId={selectedBundleId} />
       </Row>
     </Container>
   )

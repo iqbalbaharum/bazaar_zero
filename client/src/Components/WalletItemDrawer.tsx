@@ -8,7 +8,8 @@ import { sequence } from '0xsequence';
 
 type Prop = {
   isOpen?: boolean,
-  handleClose: any
+  handleClose: any,
+  selectedBundleId: string
 }
 
 export  interface AssetModel {
@@ -78,7 +79,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
   const WalletConnected = () => {
     return (
       <div>
-        <strong>{ether.account}</strong>
+        <strong>{`Bundle #${prop.selectedBundleId}`}</strong>
       </div>
     )
   }
@@ -98,7 +99,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
         <div>
         {selectedAssets.map((asset) => {
           return (
-            <NFTCard asset={asset} onClick={() => onHandleAssetUnselected(asset)} />
+            <NFTCard key={asset.tokenId as string} asset={asset} onClick={() => onHandleAssetUnselected(asset)} />
           )
         })}
         </div>
@@ -113,7 +114,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
       isOpen={prop.isOpen}
       position={Position.RIGHT}
       autoFocus={true}
-      canOutsideClickClose={true}
+      canOutsideClickClose={false}
       size={500}
     >
       <div className='z-drawer scroll'>
