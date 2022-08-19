@@ -4,12 +4,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { Mumbai, DAppProvider, Config } from '@usedapp/core'
+import { getDefaultProvider } from 'ethers'
+
+const config: Config = {
+  readOnlyChainId: Mumbai.chainId,
+  readOnlyUrls: {
+    [Mumbai.chainId]: getDefaultProvider('testnet'),
+  },
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <DAppProvider config={config}>
+      <App />
+    </DAppProvider>
   </React.StrictMode>
 );
 

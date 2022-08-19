@@ -38,4 +38,22 @@
 .z-box-footer {
   display: inline-block;
   align-self: flex-end;
+  position: absolute;
+}
+
+/* POSITION */
+.div-center {
+  padding: 20px;
+  text-align: center;
+}
+
+/* ICON-RIGHT */
+.table-list {
+  position:relative
+}
+
+.icon-right {
+  position:absolute;
+  right: 0;
+  margin-right: 20px;
 }
