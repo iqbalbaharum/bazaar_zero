@@ -6,6 +6,8 @@ import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
 import { generate_proof } from '../_aqua/node'
 
 import {ethers} from 'ethers'
+import web3 from 'web3'
+import useSequence from '../Hook/useSequence';
 
 
 type Prop = {
@@ -16,8 +18,7 @@ type Prop = {
 interface MintingState {
   isProcessing: Boolean, 
   verified: Boolean,
-  minting: Boolean,
-  accepted: Boolean
+  minting: Boolean
 }
 
 const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
@@ -25,9 +26,10 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
   const [state, setState] = useState<MintingState>({
     isProcessing: false,
     verified: false,
-    minting: false,
-    accepted: false
+    minting: false
   })
+
+  const sequenceWallet = useSequence()
 
   const mint = async () => {
 
@@ -40,6 +42,7 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
+
       const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
 
       const subscriptionName = ethers.utils.formatBytes32String("bazaar zero")
@@ -52,13 +55,41 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
         ...e,
         verified: true
       }))
+
+      const gasPrice = await provider.getGasPrice()
+      const gas_price = Math.round(gasPrice.toNumber() * 1.2)
+
+      const initBundle = contract
+                            .initializeBundle(
+                              sequenceWallet.account, 
+                              groupId,
+                              proof.byteSignal,
+                              proof.fullProof.publicSignals.nullifierHash,
+                              proof.solidityProof
+                            )
+
+      var gas_estimate = await initBundle.estimateGas({ from: account })
+      gas_estimate = Math.round(gas_estimate * 1.2); 
+        
+      console.log({gas_price, gas_estimate})
+
+      // await initBundle.send({
+      //   from: account,
+      //   gas: web3.utils.toHex(gas_estimate), 
+      //   gasPrice:  web3.utils.toHex(gas_price)
+      // })
+
+      setState(e => ({
+        ...e,
+        minting: true
+      }))
+
     } catch (e) {
       console.log(e)
       setState({
         isProcessing: false,
         verified: false,
-        minting: false,
-        accepted: false
+        minting: false
       })
     }
   }
@@ -67,8 +98,7 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
     setState({
       isProcessing: false,
       verified: false,
-      minting: false,
-      accepted: false
+      minting: false
     })
 
     prop.handleClose()
@@ -94,12 +124,6 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
           Verify (Generate proof)
           <span className='icon-right'>
             {state.isProcessing && <SpinnerCompletion flag={state.verified} />}
-          </span>
-        </Card>
-        <Card elevation={Elevation.TWO} className='table-list' >
-          Accept term and condition
-          <span className='icon-right'>
-          {state.isProcessing && <SpinnerCompletion flag={state.accepted} />}
           </span>
         </Card>
         <Card elevation={Elevation.TWO}className='table-list' >

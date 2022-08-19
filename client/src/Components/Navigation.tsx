@@ -24,7 +24,10 @@ const Navigation = () => {
     if(!isFluenceConnected) {
       id = setInterval(() => {
 
-        Fluence.start({ connectTo: krasnodar[0] })
+        Fluence.start({ 
+          connectTo: krasnodar[0],
+          defaultTtlMs: 30000
+        })
           .then(() => {
             clearInterval(id);
             setIsFluenceConnected(true)

@@ -17,8 +17,6 @@ const useSequence = () => {
       getWallet(wallet)
         .catch(console.error)
     }
-
-    
   }, [])
 
   return {

@@ -57,3 +57,30 @@
   right: 0;
   margin-right: 20px;
 }
+
+/* ITEMS DRAWER */
+.z-drawer {
+  padding: 20px;
+}
+
+.z-drawer-add-item {
+  padding-bottom: 10px;
+}
+
+/* UTILITIES */
+.w-100 {
+  width: 100%
+}
+
+.mt-5 {
+  padding-top: 5px
+}
+
+.mb-5 {
+  margin-bottom: 20px
+}
+
+.scroll {
+  overflow-y: scroll;
+  height: 100vh;
+}
