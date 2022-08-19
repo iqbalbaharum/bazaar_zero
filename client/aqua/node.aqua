@@ -1,4 +1,18 @@
-func getNodeProducts(peerId: PeerId, relayPeerId: PeerId):
-  -- on peerId via relayPeerId:
-  -- retrieve node products
-  -- return products
+import "semaphore.aqua"
+import "@fluencelabs/aqua-lib/builtin.aqua"
+
+const PEER ?= "12D3KooWEF8ddP67Zg6mRZgH6WkDccPSxsQHV4jGeH7fNerW8qSs"
+const RELAY ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
+const SEMAPHORE_SERVICE_ID ?= "semaphoreservice"
+
+func generate_proof(message: string) -> AddMember:
+  on PEER via RELAY:
+    ISemaphoreService SEMAPHORE_SERVICE_ID
+    proofs <- ISemaphoreService.add_member(message)
+  <- proofs
+
+func is_member(message: string) -> bool:
+  on PEER via RELAY:
+    ISemaphoreService SEMAPHORE_SERVICE_ID
+    resp <- ISemaphoreService.is_member(message)
+  <- resp

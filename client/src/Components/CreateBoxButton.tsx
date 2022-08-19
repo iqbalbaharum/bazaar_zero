@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Card, Elevation, Icon, IconSize } from "@blueprintjs/core";
-import ethers from 'ethers'
-import { Identity } from '@semaphore-protocol/identity'
 
 type Prop = {
   onClick?: any

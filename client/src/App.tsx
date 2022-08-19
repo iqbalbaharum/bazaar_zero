@@ -14,11 +14,19 @@ function App() {
   const [init, isInit] = useState(false)
 
   useEffect(() => {
-    // Fluence.start({ connectTo: krasnodar[0] });
+
     const walletAppURL = process.env.REACT_APP_WALLET_APP_URL || 'https://sequence.app'
     const network = 'polygon'
     sequence.initWallet(network, { walletAppURL })
     isInit(true)
+
+    setTimeout(() => {
+      Fluence.start({ connectTo: krasnodar[0] })
+      .then(e => console.log(Fluence.getStatus()))
+      .catch(e => {
+        console.log(e)
+      })
+    }, 1000)
   }, [isInit])
 
   return (

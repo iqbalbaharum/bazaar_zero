@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
 import { Drawer, Button, Position, H2 } from "@blueprintjs/core";
-
-import WalletConnectProvider from '@walletconnect/web3-provider'
 import { useEthers } from '@usedapp/core';
 
 type Prop = {

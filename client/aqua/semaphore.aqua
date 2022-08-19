@@ -1,0 +1,25 @@
+data Proof:
+  pi_a: ?[]string
+  pi_b: ?[][]string
+  pi_c: ?[]string
+  protocol: ?string
+  curve: ?string
+
+data PublicSignals:
+  merkleRoot: string
+  nullifierHash: string
+  signalHash: string
+  externalNullifier: string
+
+data FullProof:
+  proof: Proof
+  publicSignals: PublicSignals
+  
+data AddMember:
+  byteSignal: string
+  fullProof: FullProof
+  solidityProof: []string
+
+service ISemaphoreService:
+  add_member(message: string) -> AddMember
+  is_member(message: string) -> bool

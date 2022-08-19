@@ -7,7 +7,7 @@ import Wrapping from '../Pages/Wrapping'
 import MyShop from '../Pages/MyShop'
 import NodeAccount from '../Pages/NodeAccount'
 
-const NavLayout = () => {
+const NavLayout = () => {      
   return (
     <Router>
       <Navigation />
