@@ -54,9 +54,10 @@ export class SemaphoreService implements ISemaphoreServiceDef {
         if (identityJson.indexOf(identityCommitment.toString()) < 0) {
           identityJson = [...identityJson, identityCommitment.toString()]
 
-          await contract.methods.addMember(groupId, identityCommitment).send({
+          contract.methods.addMember(groupId, identityCommitment).send({
             from: process.env.ETH_PUBLIC_KEY,
-            gas: 5000000
+            to: process.env.ASSET_WRAPPER_NFT,
+            gas: 500000
           })
 
         }

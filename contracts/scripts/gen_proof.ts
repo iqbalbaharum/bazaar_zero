@@ -32,7 +32,7 @@ const main = async () => {
     await contract.methods.initializeBundle(acc.address, groupId, proof.byteSignal,
       proof.fullProof.publicSignals.nullifierHash, proof.solidityProof).send({
       from: acc.address,
-      gas: 5000000
+      gas: 1000000
     })
 
     const balanceOf = await contract.methods.balanceOf(acc.address).call()
