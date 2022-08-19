@@ -3,6 +3,11 @@ import { useState } from 'react'
 import { Card, Dialog, Classes, Button, Elevation, Icon, IconSize } from "@blueprintjs/core";
 import { useEthers } from '@usedapp/core';
 
+import AssetWrapperAbi from "../../../contracts/artifacts/contracts/AssetWrapper.sol/AssetWrapper.json"
+
+import ethers from 'ethers'
+
+
 type Prop = {
   isOpen?: boolean,
   handleClose: any
@@ -20,7 +25,16 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
     minting: false
   })
 
-  const ethers = useEthers()
+  const mint = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
+
+    const subscriptionName = ethers.utils.formatBytes32String("bazaar zero")
+    const groupId = BigInt(ethers.utils.solidityKeccak256(['bytes32'], [subscriptionName])) >> BigInt(8)
+    
+  }
 
   return (
     <Dialog isOpen={prop.isOpen} onClose={prop.handleClose}>
