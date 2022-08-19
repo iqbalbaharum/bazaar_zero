@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Card, Elevation, Classes } from "@blueprintjs/core";
+import { Card, Elevation } from "@blueprintjs/core";
 
 import SellButtonWithDialog from './SellButtonWithDialog'
 
@@ -12,7 +12,7 @@ type AssetDataProp = {
 const AssetBox: React.FC<AssetDataProp> = (data: AssetDataProp) => {
   return (
     <Card elevation={Elevation.TWO}>
-      <h5><a href="#">{data.title}</a></h5>
+      <h5><a href="">{data.title}</a></h5>
       <p><b>Type: </b>{data.type}</p>
       <SellButtonWithDialog buttonText="Add To Bundle" title={data.title} />
     </Card>

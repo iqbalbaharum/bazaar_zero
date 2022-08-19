@@ -1,14 +1,15 @@
 import * as React from 'react';
 import {useState} from 'react'
 
-import { H1, Button } from '@blueprintjs/core'
+import { H1, Button, Card, Elevation, Icon, IconSize } from '@blueprintjs/core'
 import { Container, Row, Col } from 'react-grid-system';
 
 import { ETHAuth } from '@0xsequence/ethauth'
 import { sequence } from '0xsequence'
 import ListedProductBox from '../Components/ListedProductBox';
+import CardButton from '../Components/CardButton';
 
-const Shelves = () => {
+const MyShop = () => {
   
   const walletAppURL = process.env.REACT_APP_WALLET_APP_URL || 'https://sequence.app'
   const network = 'polygon'
@@ -52,6 +53,14 @@ const Shelves = () => {
     }
   }
 
+  const ProductList = () => {
+    return (
+      <Col sm={4}>
+        <ListedProductBox title='Bundle #1' description='Phasellus lobortis cursus urna, at blandit dui pretium eget. Nam luctus risus sed libero ullamcorper, id ornare nisi eleifend. Cras quis convallis libero, viverra semper mi. Vestibulum facilisis tortor ut turpis dapibus tincidunt. Vivamus nibh lectus, imperdiet ac arcu id, lacinia venenatis odio. Ut pulvinar velit non quam volutpat, non accumsan felis malesuada. Sed consectetur accumsan metus a volutpat. ' />
+      </Col>
+    )
+  }
+
   return (
     <Container>
       <Row style={{ height: '80px' }} align="center"><H1>My Shelves</H1></Row>
@@ -60,16 +69,14 @@ const Shelves = () => {
           <Button text="Connect Sequence" onClick={() => openWallet()} /> : <a target="_blank" href="https://sequence.app" rel="noreferrer">{address}</a>
         }
       </Row>
-      {address && <Row>
-        <Col sm={4}>
-          <ListedProductBox title='Lorem ipsum dolor sit amet, consectetur adipiscing elit' description='Phasellus lobortis cursus urna, at blandit dui pretium eget. Nam luctus risus sed libero ullamcorper, id ornare nisi eleifend. Cras quis convallis libero, viverra semper mi. Vestibulum facilisis tortor ut turpis dapibus tincidunt. Vivamus nibh lectus, imperdiet ac arcu id, lacinia venenatis odio. Ut pulvinar velit non quam volutpat, non accumsan felis malesuada. Sed consectetur accumsan metus a volutpat. ' />
-        </Col>
-        <Col sm={4}>
-          <ListedProductBox title='Vivamus semper elementum sem et sodales' description='Pellentesque eu elit vestibulum, facilisis nisl ut, vestibulum elit. Aliquam erat volutpat. Sed fringilla rutrum ante condimentum viverra. Fusce sed tempus nulla. Aenean rhoncus ultrices semper. Nullam et ex bibendum, hendrerit magna ac, faucibus risus. Cras at feugiat libero, sed molestie sem.' />
-        </Col>
-      </Row>}
+      {address && <div>
+        <Row>
+          <CardButton></CardButton>
+          <ProductList />
+        </Row>
+      </div>}
     </Container>
   )
 }
 
-export default Shelves
+export default MyShop

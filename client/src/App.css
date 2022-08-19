@@ -21,3 +21,21 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+/* CARD */
+.z-box {
+  border-radius: 16px;
+  height: 250px;
+  width: 250px;
+  display: flex;
+}
+
+.z-box-inner {
+  align-items: center;
+  justify-content: center;
+}
+
+.z-box-footer {
+  display: inline-block;
+  align-self: flex-end;
+}

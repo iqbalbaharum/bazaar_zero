@@ -5,8 +5,8 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
 import Navigation from './Components/Navigation'
 
-import MyAssets from './Pages/MyAssets'
-import Shelves from './Pages/Shelves'
+import Wrapping from './Pages/Wrapping'
+import MyShop from './Pages/MyShop'
 import NodeAccount from './Pages/NodeAccount'
 
 import { Fluence } from '@fluencelabs/fluence';
@@ -24,8 +24,8 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/node" element={<NodeAccount/>} />
-          <Route path="/shelves" element={<Shelves/>} />
-          <Route path="/assets" element={<MyAssets/>} />
+          <Route path="/my" element={<MyShop/>} />
+          <Route path="/wrapping" element={<Wrapping/>} />
         </Routes>
       </Router>
     </div>

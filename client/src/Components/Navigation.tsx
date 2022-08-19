@@ -11,10 +11,10 @@ const Navigation = () => {
       <NavbarGroup align={Alignment.RIGHT}>
         <NavbarHeading>Bazaar Zero</NavbarHeading>
         <NavbarDivider />
-        <Button intent="success" text="Account" onClick={() => navigate('/node')} />
+        <Button intent="success" text="Create Box" rightIcon="plus" onClick={() => navigate('/node')} />
         <NavbarDivider />
-        <Button className={Classes.MINIMAL} text="Shelves" onClick={() => navigate('/shelves')} />
-        <Button className={Classes.MINIMAL} text="My Assets" onClick={() => navigate('/assets')}/>
+        <Button className={Classes.MINIMAL} text="My Shop" onClick={() => navigate('/my')} />
+        <Button className={Classes.MINIMAL} text="Wrapper" onClick={() => navigate('/wrapping')}/>
       </NavbarGroup>
     </Navbar>
   )

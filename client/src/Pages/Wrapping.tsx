@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 
 import AssetBox from '../Components/AssetBox'
 
-const MyAssets = () => {
+const Wrapping = () => {
 
   const [web3Modal, setWeb3Modal] = useState<any>(null)
   const [address, setAddress] = useState("")
@@ -53,8 +53,6 @@ const MyAssets = () => {
           {!address 
             ? <Button text="Connect Metamask" onClick={() => connectWallet()} /> : `Wallet: ${address}`
           }
-
-
         </p>
       </Row>
       {address && <Row>
@@ -69,4 +67,4 @@ const MyAssets = () => {
   )
 }
 
-export default MyAssets
+export default Wrapping
