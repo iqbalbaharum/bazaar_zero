@@ -47,7 +47,7 @@ const Search = () => {
       const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
       await contract.buy(
         parseInt(asset.id),
-        { value: ethers.utils.parseEther("0.1") }
+        { value: ethers.utils.parseEther("1") }
       )
   }
 
