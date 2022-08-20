@@ -1,0 +1,90 @@
+@import "~normalize.css";
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+
+.App {
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* CARD */
+.z-box {
+  border-radius: 16px;
+  height: 250px;
+  width: 100%;
+  display: flex;
+}
+
+.z-box-inner {
+  align-items: center;
+  justify-content: center;
+}
+
+.z-box-footer {
+  display: inline-block;
+  align-self: flex-end;
+  position: absolute;
+}
+
+/* POSITION */
+.div-center {
+  padding: 20px;
+  text-align: center;
+}
+
+/* ICON-RIGHT */
+.table-list {
+  position:relative
+}
+
+.icon-right {
+  position:absolute;
+  right: 0;
+  margin-right: 20px;
+}
+
+/* ITEMS DRAWER */
+.z-drawer {
+  padding: 20px;
+}
+
+.z-drawer-add-item {
+  padding-bottom: 10px;
+}
+
+/* UTILITIES */
+.w-100 {
+  width: 100%
+}
+
+.mt-5 {
+  padding-top: 5px
+}
+
+.mt-xl {
+  margin-top: 20px;
+}
+
+.mb-5 {
+  margin-bottom: 20px
+}
+
+.scroll {
+  overflow-y: scroll;
+  height: 100vh;
+}

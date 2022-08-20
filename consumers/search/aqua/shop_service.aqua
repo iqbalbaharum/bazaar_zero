@@ -1,0 +1,11 @@
+import "@fluencelabs/aqua-lib/builtin.aqua"
+
+data Product:
+  address: string
+  id: string
+  title: string
+  price: u32
+
+service ShopService:
+  list() -> []Product
+  list_by_keyword(search: string) -> []Product

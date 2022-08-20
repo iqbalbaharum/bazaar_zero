@@ -1,0 +1,11 @@
+import "shop_service.aqua"
+import "@fluencelabs/aqua-lib/builtin.aqua"
+
+const RELAY ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
+const SHOP_SERVICE_ID ?= "shopservice"
+
+func get_products(peerId: PeerId) -> []Product :
+  on peerId via RELAY:
+    ShopService SHOP_SERVICE_ID
+    res <- ShopService.list()
+  <- res
