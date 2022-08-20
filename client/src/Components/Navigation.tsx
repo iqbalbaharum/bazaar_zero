@@ -9,6 +9,8 @@ import { Fluence } from '@fluencelabs/fluence';
 import { krasnodar } from '@fluencelabs/fluence-network-environment';
 import FluenceService from './FluenceService';
 
+import { registerProvider, resolveProviders } from '../_aqua/export';
+
 const Navigation = () => {
 
   const navigate = useNavigate() 
@@ -22,6 +24,15 @@ const Navigation = () => {
 
     let id: any
     
+    const registerDiscovery = async () => {
+      const [success, error] = await registerProvider(
+        "DOSASeller12D3KooWEY2Q7TmhSciBtrjhNyDTC3dKfmC4FSETYCZ5K1G27SN3",
+        "Seller",
+        "shopservice");
+        
+      console.log(success, error)
+    }
+
     if(!isFluenceConnected) {
       id = setInterval(() => {
 
@@ -32,7 +43,8 @@ const Navigation = () => {
           .then(() => {
             clearInterval(id);
             setIsFluenceConnected(true)
-            console.log(Fluence.getPeer().getStatus())
+
+            registerDiscovery()
           })
       }, 10000)  
     }
@@ -53,7 +65,7 @@ const Navigation = () => {
   const ConnectedText = () => {
     return (
       <strong style={{color:"green"}}>
-        Connected <Icon icon="tick-circle" color="green" /> 
+        {Fluence.getStatus().peerId} <Icon icon="tick-circle" color="green" /> 
       </strong>
     )
   }

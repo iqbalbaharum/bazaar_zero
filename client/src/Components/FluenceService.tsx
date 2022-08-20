@@ -2,7 +2,7 @@ import { sequence } from '0xsequence';
 import * as React from 'react';
 import { useEffect } from 'react'
 import useSequence from '../Hook/useSequence';
-import { registerShopService } from '../_aqua/shop_service';
+import { registerShopService } from '../_aqua/node';
 import { Fluence } from '@fluencelabs/fluence';
 
 interface ProductItem {
@@ -50,7 +50,7 @@ const FluenceService = () => {
         }
       })
 
-      console.log(Fluence.getPeer().getServices())
+      console.log(Fluence.getPeer())
     } catch(e) {
       console.log(e)
     }
