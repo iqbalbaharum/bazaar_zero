@@ -9,6 +9,8 @@ import CreateBoxDialog from '../Components/CreateBoxDialog';
 import { sequence } from '0xsequence';
 import useSequence from '../Hook/useSequence';
 
+import logo from '../assets/zero-1.png';
+
 const MyShop = () => {
 
   const [open, isOpen] = useState(false)
@@ -58,27 +60,30 @@ const MyShop = () => {
   }
 
   return (
-    <Container>
-      <Row className="mt-xl">
-        <Col sm={3}>
-          <CreateBoxButton onClick={toggleCreateDialog} />
-        </Col>
-        
-        {nfts.map((nft) => 
-          (
-            <Col sm={3} key={nft.tokenID}>
-            <ListedProductBox
-              title={nft.tokenMetadata?.name as string}
-              description={`Bundle #${nft.tokenID}`}
-              onClick={() => toggleDrawer(nft.tokenID)} />
-            </Col>
-          )
-        )}
+    <div style={{height: '100%'}}>
+      <img style={{display: 'flex', position: 'absolute', bottom: 0, zIndex: -999, opacity: 0.1, width: '100%', maxWidth: '100%', maxHeight: '100%'}} src={logo} alt="Bazaar Zero"/>
+      <Container>
+        <Row className="mt-xl">
+          <Col sm={3}>
+            <CreateBoxButton onClick={toggleCreateDialog} />
+          </Col>
+          
+          {nfts.map((nft) => 
+            (
+              <Col sm={3} key={nft.tokenID}>
+              <ListedProductBox
+                title={nft.tokenMetadata?.name as string}
+                description={`Bundle #${nft.tokenID}`}
+                onClick={() => toggleDrawer(nft.tokenID)} />
+              </Col>
+            )
+          )}
 
-        <CreateBoxDialog isOpen={createDialogOpen} handleClose={toggleCreateDialog} />
-        <WalletItemDrawer handleClose={handleClose} isOpen={open} selectedBundleId={selectedBundleId} />
-      </Row>
-    </Container>
+          <CreateBoxDialog isOpen={createDialogOpen} handleClose={toggleCreateDialog} />
+          <WalletItemDrawer handleClose={handleClose} isOpen={open} selectedBundleId={selectedBundleId} />
+        </Row>
+      </Container>
+    </div>
   )
 }
 
