@@ -92,86 +92,18 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "tokenAddress",
+        "name": "nodeAddress",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
-    "name": "BuyERC1155",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "buyer",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "bundleId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "BuyERC20",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "buyer",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "bundleId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "BuyERC721",
+    "name": "Buy",
     "type": "event"
   },
   {
@@ -206,6 +138,12 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "DepositERC1155",
@@ -237,6 +175,12 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "DepositERC20",
@@ -268,6 +212,12 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "DepositERC721",
@@ -404,6 +354,37 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "bundleId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "nodeAddress",
+        "type": "address"
+      }
+    ],
+    "name": "Sell",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "groupId",
         "type": "uint256"
@@ -497,24 +478,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_relayer",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_commision",
-        "type": "uint256"
-      }
-    ],
-    "name": "addRelayer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "to",
         "type": "address"
       },
@@ -527,25 +490,6 @@
     "name": "approve",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "assetRelayers",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "commision",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -570,9 +514,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -580,37 +524,12 @@
         "type": "uint256"
       }
     ],
-    "name": "bundleERC1155Holdings",
+    "name": "bundleIdsByAddress",
     "outputs": [
       {
-        "internalType": "address",
-        "name": "nodeAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "relayerAddress",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -622,29 +541,24 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "name": "bundles",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "bundleId",
         "type": "uint256"
-      }
-    ],
-    "name": "bundleERC20Holdings",
-    "outputs": [
+      },
       {
         "internalType": "address",
         "name": "nodeAddress",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -652,53 +566,19 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "relayerAddress",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "bundleERC721Holdings",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "nodeAddress",
-        "type": "address"
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
       },
       {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "relayerAddress",
-        "type": "address"
+        "internalType": "bool",
+        "name": "isSelling",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -723,70 +603,9 @@
         "internalType": "uint256",
         "name": "bundleId",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
-    "name": "buyERC1155",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "bundleId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "buyERC20",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "bundleId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "buyERC721",
+    "name": "buy",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -827,19 +646,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "nodeAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "relayerAddress",
-        "type": "address"
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "depositERC1155",
@@ -865,19 +674,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "nodeAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "relayerAddress",
-        "type": "address"
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "depositERC20",
@@ -903,19 +702,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "nodeAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "relayerAddress",
-        "type": "address"
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "depositERC721",
@@ -937,6 +726,152 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      }
+    ],
+    "name": "getBundleIdsByAddress",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getBundles",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "bundleId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "nodeAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSelling",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct AssetWrapper.ERC721Holding[]",
+            "name": "bundleERC721",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct AssetWrapper.ERC1155Holding[]",
+            "name": "bundleERC1155",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct AssetWrapper.ERC20Holding[]",
+            "name": "bundleERC20",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct AssetWrapper.Bundle",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -1010,6 +945,16 @@
         "internalType": "uint256",
         "name": "groupId",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
       },
       {
         "internalType": "bytes32",
@@ -1335,6 +1280,29 @@
       }
     ],
     "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "bundleId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "nodeAddress",
+        "type": "address"
+      }
+    ],
+    "name": "sell",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

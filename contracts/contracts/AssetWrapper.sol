@@ -72,6 +72,8 @@ contract AssetWrapper is
       address nodeAddress;
       uint256 price;
       string title;
+      string description;
+      bool isSelling;
       ERC721Holding[] bundleERC721;
       ERC1155Holding[] bundleERC1155;
       ERC20Holding[] bundleERC20;
@@ -124,7 +126,7 @@ contract AssetWrapper is
     /**
      * @inheritdoc IAssetWrapper
      */
-    function initializeBundle(address to, uint256 groupId, string memory title, bytes32 signal, uint256 _nullifierHash,
+    function initializeBundle(address to, uint256 groupId, string memory title, string memory description, bytes32 signal, uint256 _nullifierHash,
         uint256[8] calldata _proof) external returns (uint256) {
         uint256 root = getRoot(groupId);
 
@@ -250,6 +252,7 @@ contract AssetWrapper is
 
       bundles[bundleId].price = price;
       bundles[bundleId].nodeAddress = nodeAddress;
+      bundles[bundleId].isSelling = true;
 
       _transfer(msg.sender, nodeAddress, bundleId);
 
