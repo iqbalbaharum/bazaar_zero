@@ -26,7 +26,7 @@ const Search = () => {
   const onHandleSearch = async () => {
 
     if(!Fluence.getStatus().isConnected) { return }
-    
+
     setIsLoading(true)
     let res = await retrieve_products_by_keyword_from_network(
       "DOSASeller12D3KooWFFNCaJMb4TuQpAZbdAuk18H95e8acjQcFL2RWuJppS8o",
@@ -46,7 +46,8 @@ const Search = () => {
 
       const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
       await contract.buy(
-        parseInt(asset.id)
+        parseInt(asset.id),
+        { value: ethers.utils.parseEther("0.1") }
       )
   }
 
