@@ -52,14 +52,12 @@ contract AssetWrapper is
         uint256 amount;
         string title;
     }
-    mapping(uint256 => ERC20Holding[]) public bundleERC20Holdings;
 
     struct ERC721Holding {
         address tokenAddress;
         uint256 tokenId;
         string title;
     }
-    mapping(uint256 => ERC721Holding[]) public bundleERC721Holdings;
 
     struct ERC1155Holding {
         address tokenAddress;
@@ -67,13 +65,13 @@ contract AssetWrapper is
         uint256 amount;
         string title;
     }
-    mapping(uint256 => ERC1155Holding[]) public bundleERC1155Holdings;
     
     struct Bundle {
       address owner;
       uint256 bundleId;
       address nodeAddress;
       uint256 price;
+      string title;
       ERC721Holding[] bundleERC721;
       ERC1155Holding[] bundleERC1155;
       ERC20Holding[] bundleERC20;
@@ -126,7 +124,7 @@ contract AssetWrapper is
     /**
      * @inheritdoc IAssetWrapper
      */
-    function initializeBundle(address to, uint256 groupId, bytes32 signal, uint256 _nullifierHash,
+    function initializeBundle(address to, uint256 groupId, string memory title, bytes32 signal, uint256 _nullifierHash,
         uint256[8] calldata _proof) external returns (uint256) {
         uint256 root = getRoot(groupId);
 
@@ -142,6 +140,7 @@ contract AssetWrapper is
         bundleIdsByAddress[to].push(_tokenId);
         bundles[_tokenId].owner = to;
         bundles[_tokenId].bundleId = _tokenId;
+        bundles[_tokenId].title = title;
 
         emit ProofVerified(groupId, signal);
 
