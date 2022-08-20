@@ -2,11 +2,11 @@ import * as React from 'react';
 import {useState} from 'react'
 import { Container, Row, Col } from 'react-grid-system';
 import { InputGroup, Icon, Button } from '@blueprintjs/core'
-import { get_products_from_peer, retrieve_products_from_network } from '../_aqua/node';
-import { resolveProviders } from '../_aqua/export';
+import { retrieve_products_by_keyword_from_network, retrieve_products_from_network } from '../_aqua/node';
 import ListedProductBox from '../Components/ListedProductBox';
 import { ethers } from 'ethers'
 import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
+import { Fluence } from '@fluencelabs/fluence';
 export  interface AssetModel {
   address: string
   id: string
@@ -24,8 +24,14 @@ const Search = () => {
   const onSearchChanged =(event: any) => setSearchText(event.target.value)
 
   const onHandleSearch = async () => {
+
+    if(!Fluence.getStatus().isConnected) { return }
+    
     setIsLoading(true)
-    let res = await retrieve_products_from_network("DOSASeller12D3KooWFFNCaJMb4TuQpAZbdAuk18H95e8acjQcFL2RWuJppS8o")
+    let res = await retrieve_products_by_keyword_from_network(
+      "DOSASeller12D3KooWFFNCaJMb4TuQpAZbdAuk18H95e8acjQcFL2RWuJppS8o",
+      search
+    )
     console.log(res)
     setProducts(res as AssetModel[])
     setIsLoading(false)
@@ -46,8 +52,8 @@ const Search = () => {
 
   return (
     <Container fluid>
-      <Row style={{ height: '80px' }} align="center">&nbsp;</Row>
-      <Row align="center">
+      <Row align="center" justify="center">&nbsp;</Row>
+      <Row style={{ height: '80px' }} align="center" justify="center">
         <Col sm={3}>&nbsp;</Col>
         <Col sm={5}>
           <InputGroup

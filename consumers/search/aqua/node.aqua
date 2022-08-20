@@ -13,6 +13,28 @@ func get_products_from_peer(peerId: PeerId) -> [][]Product :
       products <- ShopService.list()
   <- products
 
+func retrieve_products_by_keyword_from_network(resource_id: string, keyword: string) -> []Product :
+  products: *Product
+  responses: *string
+
+  providers <- resolveProviders(resource_id, 2)
+  for record <- providers par:
+    on RELAY:
+      if Peer.is_connected(record.peer_id):
+        on record.peer_id:
+          ShopService SHOP_SERVICE_ID
+          prods <- ShopService.list_by_keyword(keyword)
+          for p <- prods:
+            products <<- p
+
+          responses <<- "ok"
+  
+  join responses[19]
+  -- To prevent from the dead peer, do race pattern
+  par Peer.timeout(7000, "timeout")
+
+  <- products
+
 func retrieve_products_from_network(resource_id: string) -> []Product :
   products: *Product
   responses: *string
