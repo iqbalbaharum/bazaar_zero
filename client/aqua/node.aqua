@@ -1,11 +1,20 @@
 import "semaphore.aqua"
-import "shop_service.aqua"
 import "@fluencelabs/aqua-lib/builtin.aqua"
 
 const SEMAPHORE_PEER ?= "12D3KooWEF8ddP67Zg6mRZgH6WkDccPSxsQHV4jGeH7fNerW8qSs"
 const RELAY ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
 const SEMAPHORE_SERVICE_ID ?= "semaphoreservice"
 const SHOP_SERVICE_ID ?= "shopservice"
+
+data Product:
+  address: string
+  id: string
+  title: string
+  price: u32
+
+service ShopService("shopservice"):
+  list() -> []Product
+  list_by_keyword(search: string) -> []Product
 
 func generate_proof(message: string) -> AddMember:
   on SEMAPHORE_PEER via RELAY:
@@ -18,7 +27,3 @@ func is_member(message: string) -> bool:
     ISemaphoreService SEMAPHORE_SERVICE_ID
     resp <- ISemaphoreService.is_member(message)
   <- resp
-
-func get_products() -> []Product :
-    res <- ShopService.list()
-  <- res

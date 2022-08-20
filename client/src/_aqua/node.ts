@@ -16,6 +16,108 @@ import {
 
 // Services
 
+export interface ShopServiceDef {
+    list: (callParams: CallParams<null>) => { address: string; id: string; price: number; title: string; }[] | Promise<{ address: string; id: string; price: number; title: string; }[]>;
+    list_by_keyword: (search: string, callParams: CallParams<'search'>) => { address: string; id: string; price: number; title: string; }[] | Promise<{ address: string; id: string; price: number; title: string; }[]>;
+}
+export function registerShopService(service: ShopServiceDef): void;
+export function registerShopService(serviceId: string, service: ShopServiceDef): void;
+export function registerShopService(peer: FluencePeer, service: ShopServiceDef): void;
+export function registerShopService(peer: FluencePeer, serviceId: string, service: ShopServiceDef): void;
+       
+
+export function registerShopService(...args: any) {
+    registerService(
+        args,
+        {
+    "defaultServiceId" : "shopservice",
+    "functions" : {
+        "tag" : "labeledProduct",
+        "fields" : {
+            "list" : {
+                "tag" : "arrow",
+                "domain" : {
+                    "tag" : "nil"
+                },
+                "codomain" : {
+                    "tag" : "unlabeledProduct",
+                    "items" : [
+                        {
+                            "tag" : "array",
+                            "type" : {
+                                "tag" : "struct",
+                                "name" : "Product",
+                                "fields" : {
+                                    "address" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    },
+                                    "id" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    },
+                                    "price" : {
+                                        "tag" : "scalar",
+                                        "name" : "u32"
+                                    },
+                                    "title" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "list_by_keyword" : {
+                "tag" : "arrow",
+                "domain" : {
+                    "tag" : "labeledProduct",
+                    "fields" : {
+                        "search" : {
+                            "tag" : "scalar",
+                            "name" : "string"
+                        }
+                    }
+                },
+                "codomain" : {
+                    "tag" : "unlabeledProduct",
+                    "items" : [
+                        {
+                            "tag" : "array",
+                            "type" : {
+                                "tag" : "struct",
+                                "name" : "Product",
+                                "fields" : {
+                                    "address" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    },
+                                    "id" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    },
+                                    "price" : {
+                                        "tag" : "scalar",
+                                        "name" : "u32"
+                                    },
+                                    "title" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
+    );
+}
+      
 // Functions
  
 export type Generate_proofResult = { byteSignal: string; fullProof: { proof: { curve: string | null; pi_a: string[] | null; pi_b: string[][] | null; pi_c: string[] | null; protocol: string | null; }; publicSignals: { externalNullifier: string; merkleRoot: string; nullifierHash: string; signalHash: string; }; }; solidityProof: string[]; }
@@ -279,91 +381,6 @@ export function is_member(...args: any) {
                 {
                     "tag" : "scalar",
                     "name" : "bool"
-                }
-            ]
-        }
-    },
-    "names" : {
-        "relay" : "-relay-",
-        "getDataSrv" : "getDataSrv",
-        "callbackSrv" : "callbackSrv",
-        "responseSrv" : "callbackSrv",
-        "responseFnName" : "response",
-        "errorHandlingSrv" : "errorHandlingSrv",
-        "errorFnName" : "error"
-    }
-},
-        script
-    )
-}
-
- 
-
-export function get_products(
-    config?: {ttl?: number}
-): Promise<{ address: string; id: string; price: number; title: string; }[]>;
-
-export function get_products(
-    peer: FluencePeer,
-    config?: {ttl?: number}
-): Promise<{ address: string; id: string; price: number; title: string; }[]>;
-
-export function get_products(...args: any) {
-
-    let script = `
-                    (xor
-                     (seq
-                      (seq
-                       (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-                       (call %init_peer_id% ("shopservice" "list") [] res)
-                      )
-                      (xor
-                       (call %init_peer_id% ("callbackSrv" "response") [res])
-                       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
-                      )
-                     )
-                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
-                    )
-    `
-    return callFunction(
-        args,
-        {
-    "functionName" : "get_products",
-    "arrow" : {
-        "tag" : "arrow",
-        "domain" : {
-            "tag" : "labeledProduct",
-            "fields" : {
-                
-            }
-        },
-        "codomain" : {
-            "tag" : "unlabeledProduct",
-            "items" : [
-                {
-                    "tag" : "array",
-                    "type" : {
-                        "tag" : "struct",
-                        "name" : "Product",
-                        "fields" : {
-                            "address" : {
-                                "tag" : "scalar",
-                                "name" : "string"
-                            },
-                            "id" : {
-                                "tag" : "scalar",
-                                "name" : "string"
-                            },
-                            "price" : {
-                                "tag" : "scalar",
-                                "name" : "u32"
-                            },
-                            "title" : {
-                                "tag" : "scalar",
-                                "name" : "string"
-                            }
-                        }
-                    }
                 }
             ]
         }

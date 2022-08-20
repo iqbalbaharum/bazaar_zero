@@ -19,18 +19,289 @@ import {
 // Functions
  
 
-export function get_products(
-    peerId: string,
+export function retrieve_products_from_network(
+    resource_id: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; price: number; title: string; }[]>;
+): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
 
-export function get_products(
+export function retrieve_products_from_network(
     peer: FluencePeer,
-    peerId: string,
+    resource_id: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; price: number; title: string; }[]>;
+): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
 
-export function get_products(...args: any) {
+export function retrieve_products_from_network(...args: any) {
+
+    let script = `
+                    (xor
+                     (seq
+                      (seq
+                       (seq
+                        (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                        (call %init_peer_id% ("getDataSrv" "resource_id") [] resource_id)
+                       )
+                       (new $responses
+                        (new $products
+                         (seq
+                          (seq
+                           (seq
+                            (new $successful
+                             (new $res
+                              (xor
+                               (seq
+                                (seq
+                                 (seq
+                                  (seq
+                                   (seq
+                                    (seq
+                                     (call -relay- ("op" "string_to_b58") [resource_id] k)
+                                     (call -relay- ("kad" "neighborhood") [k [] []] nodes)
+                                    )
+                                    (par
+                                     (fold nodes n-0
+                                      (par
+                                       (seq
+                                        (xor
+                                         (xor
+                                          (seq
+                                           (seq
+                                            (call n-0 ("peer" "timestamp_sec") [] t)
+                                            (call n-0 ("registry" "get_records") [resource_id t] get_result)
+                                           )
+                                           (xor
+                                            (match get_result.$.success! true
+                                             (seq
+                                              (ap get_result.$.result! $res)
+                                              (ap true $successful)
+                                             )
+                                            )
+                                            (ap get_result.$.error! $error)
+                                           )
+                                          )
+                                          (call n-0 ("op" "noop") [])
+                                         )
+                                         (seq
+                                          (call -relay- ("op" "noop") [])
+                                          (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                                         )
+                                        )
+                                        (call -relay- ("op" "noop") [])
+                                       )
+                                       (next n-0)
+                                      )
+                                     )
+                                     (null)
+                                    )
+                                   )
+                                   (new $status
+                                    (new $result-0
+                                     (seq
+                                      (seq
+                                       (seq
+                                        (par
+                                         (seq
+                                          (seq
+                                           (call -relay- ("math" "sub") [2 1] sub)
+                                           (call -relay- ("op" "noop") [$successful.$.[sub]!])
+                                          )
+                                          (ap "ok" $status)
+                                         )
+                                         (call -relay- ("peer" "timeout") [6000 "timeout"] $status)
+                                        )
+                                        (call -relay- ("op" "identity") [$status.$.[0]!] stat)
+                                       )
+                                       (xor
+                                        (match stat "ok"
+                                         (ap true $result-0)
+                                        )
+                                        (ap false $result-0)
+                                       )
+                                      )
+                                      (call -relay- ("op" "identity") [$result-0] result-fix)
+                                     )
+                                    )
+                                   )
+                                  )
+                                  (xor
+                                   (match result-fix.$.[0]! false
+                                    (ap "timeout exceeded" $error)
+                                   )
+                                   (call -relay- ("op" "noop") [])
+                                  )
+                                 )
+                                 (call -relay- ("registry" "merge") [$res] result)
+                                )
+                                (xor
+                                 (match result.$.success! false
+                                  (ap result.$.error! $error)
+                                 )
+                                 (call -relay- ("op" "noop") [])
+                                )
+                               )
+                               (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
+                              )
+                             )
+                            )
+                            (par
+                             (fold result.$.result! record-0
+                              (par
+                               (seq
+                                (seq
+                                 (seq
+                                  (call -relay- ("op" "noop") [])
+                                  (xor
+                                   (xor
+                                    (seq
+                                     (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("peer" "is_connected") [record-0.$.peer_id!] is_connected)
+                                     (match is_connected true
+                                      (xor
+                                       (xor
+                                        (seq
+                                         (seq
+                                          (call record-0.$.peer_id! ("shopservice" "list") [] prods)
+                                          (fold prods p-0
+                                           (seq
+                                            (ap p-0 $products)
+                                            (next p-0)
+                                           )
+                                          )
+                                         )
+                                         (ap "ok" $responses)
+                                        )
+                                        (seq
+                                         (seq
+                                          (call -relay- ("op" "noop") [])
+                                          (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 3])
+                                         )
+                                         (call -relay- ("op" "noop") [])
+                                        )
+                                       )
+                                       (seq
+                                        (seq
+                                         (call -relay- ("op" "noop") [])
+                                         (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 4])
+                                        )
+                                        (call -relay- ("op" "noop") [])
+                                       )
+                                      )
+                                     )
+                                    )
+                                    (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                                   )
+                                   (seq
+                                    (call -relay- ("op" "noop") [])
+                                    (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 5])
+                                   )
+                                  )
+                                 )
+                                 (call -relay- ("op" "noop") [])
+                                )
+                                (call %init_peer_id% ("op" "noop") [])
+                               )
+                               (next record-0)
+                              )
+                             )
+                             (null)
+                            )
+                           )
+                           (par
+                            (call %init_peer_id% ("op" "noop") [$responses.$.[19]!])
+                            (call %init_peer_id% ("peer" "timeout") [7000 "timeout"])
+                           )
+                          )
+                          (call %init_peer_id% ("op" "identity") [$products] products-fix)
+                         )
+                        )
+                       )
+                      )
+                      (xor
+                       (call %init_peer_id% ("callbackSrv" "response") [products-fix])
+                       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 6])
+                      )
+                     )
+                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 7])
+                    )
+    `
+    return callFunction(
+        args,
+        {
+    "functionName" : "retrieve_products_from_network",
+    "arrow" : {
+        "tag" : "arrow",
+        "domain" : {
+            "tag" : "labeledProduct",
+            "fields" : {
+                "resource_id" : {
+                    "tag" : "scalar",
+                    "name" : "string"
+                }
+            }
+        },
+        "codomain" : {
+            "tag" : "unlabeledProduct",
+            "items" : [
+                {
+                    "tag" : "array",
+                    "type" : {
+                        "tag" : "struct",
+                        "name" : "Product",
+                        "fields" : {
+                            "peerId" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "price" : {
+                                "tag" : "scalar",
+                                "name" : "u32"
+                            },
+                            "id" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "address" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "title" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "names" : {
+        "relay" : "-relay-",
+        "getDataSrv" : "getDataSrv",
+        "callbackSrv" : "callbackSrv",
+        "responseSrv" : "callbackSrv",
+        "responseFnName" : "response",
+        "errorHandlingSrv" : "errorHandlingSrv",
+        "errorFnName" : "error"
+    }
+},
+        script
+    )
+}
+
+ 
+
+export function retrieve_products_by_keyword_from_network(
+    resource_id: string,
+    keyword: string,
+    config?: {ttl?: number}
+): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+
+export function retrieve_products_by_keyword_from_network(
+    peer: FluencePeer,
+    resource_id: string,
+    keyword: string,
+    config?: {ttl?: number}
+): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+
+export function retrieve_products_by_keyword_from_network(...args: any) {
 
     let script = `
                     (xor
@@ -38,33 +309,314 @@ export function get_products(...args: any) {
                       (seq
                        (seq
                         (seq
-                         (seq
-                          (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-                          (call %init_peer_id% ("getDataSrv" "peerId") [] peerId)
-                         )
-                         (call -relay- ("op" "noop") [])
+                         (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                         (call %init_peer_id% ("getDataSrv" "resource_id") [] resource_id)
                         )
-                        (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                        (call %init_peer_id% ("getDataSrv" "keyword") [] keyword)
                        )
-                       (xor
-                        (seq
+                       (new $responses
+                        (new $products
                          (seq
-                          (call peerId ("shopservice" "list") [] res)
-                          (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                          (seq
+                           (seq
+                            (new $successful
+                             (new $res
+                              (xor
+                               (seq
+                                (seq
+                                 (seq
+                                  (seq
+                                   (seq
+                                    (seq
+                                     (call -relay- ("op" "string_to_b58") [resource_id] k)
+                                     (call -relay- ("kad" "neighborhood") [k [] []] nodes)
+                                    )
+                                    (par
+                                     (fold nodes n-0
+                                      (par
+                                       (seq
+                                        (xor
+                                         (xor
+                                          (seq
+                                           (seq
+                                            (call n-0 ("peer" "timestamp_sec") [] t)
+                                            (call n-0 ("registry" "get_records") [resource_id t] get_result)
+                                           )
+                                           (xor
+                                            (match get_result.$.success! true
+                                             (seq
+                                              (ap get_result.$.result! $res)
+                                              (ap true $successful)
+                                             )
+                                            )
+                                            (ap get_result.$.error! $error)
+                                           )
+                                          )
+                                          (call n-0 ("op" "noop") [])
+                                         )
+                                         (seq
+                                          (call -relay- ("op" "noop") [])
+                                          (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                                         )
+                                        )
+                                        (call -relay- ("op" "noop") [])
+                                       )
+                                       (next n-0)
+                                      )
+                                     )
+                                     (null)
+                                    )
+                                   )
+                                   (new $status
+                                    (new $result-0
+                                     (seq
+                                      (seq
+                                       (seq
+                                        (par
+                                         (seq
+                                          (seq
+                                           (call -relay- ("math" "sub") [2 1] sub)
+                                           (call -relay- ("op" "noop") [$successful.$.[sub]!])
+                                          )
+                                          (ap "ok" $status)
+                                         )
+                                         (call -relay- ("peer" "timeout") [6000 "timeout"] $status)
+                                        )
+                                        (call -relay- ("op" "identity") [$status.$.[0]!] stat)
+                                       )
+                                       (xor
+                                        (match stat "ok"
+                                         (ap true $result-0)
+                                        )
+                                        (ap false $result-0)
+                                       )
+                                      )
+                                      (call -relay- ("op" "identity") [$result-0] result-fix)
+                                     )
+                                    )
+                                   )
+                                  )
+                                  (xor
+                                   (match result-fix.$.[0]! false
+                                    (ap "timeout exceeded" $error)
+                                   )
+                                   (call -relay- ("op" "noop") [])
+                                  )
+                                 )
+                                 (call -relay- ("registry" "merge") [$res] result)
+                                )
+                                (xor
+                                 (match result.$.success! false
+                                  (ap result.$.error! $error)
+                                 )
+                                 (call -relay- ("op" "noop") [])
+                                )
+                               )
+                               (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
+                              )
+                             )
+                            )
+                            (par
+                             (fold result.$.result! record-0
+                              (par
+                               (seq
+                                (seq
+                                 (seq
+                                  (call -relay- ("op" "noop") [])
+                                  (xor
+                                   (xor
+                                    (seq
+                                     (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("peer" "is_connected") [record-0.$.peer_id!] is_connected)
+                                     (match is_connected true
+                                      (xor
+                                       (xor
+                                        (seq
+                                         (seq
+                                          (call record-0.$.peer_id! ("shopservice" "list_by_keyword") [keyword] prods)
+                                          (fold prods p-0
+                                           (seq
+                                            (ap p-0 $products)
+                                            (next p-0)
+                                           )
+                                          )
+                                         )
+                                         (ap "ok" $responses)
+                                        )
+                                        (seq
+                                         (seq
+                                          (call -relay- ("op" "noop") [])
+                                          (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 3])
+                                         )
+                                         (call -relay- ("op" "noop") [])
+                                        )
+                                       )
+                                       (seq
+                                        (seq
+                                         (call -relay- ("op" "noop") [])
+                                         (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 4])
+                                        )
+                                        (call -relay- ("op" "noop") [])
+                                       )
+                                      )
+                                     )
+                                    )
+                                    (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                                   )
+                                   (seq
+                                    (call -relay- ("op" "noop") [])
+                                    (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 5])
+                                   )
+                                  )
+                                 )
+                                 (call -relay- ("op" "noop") [])
+                                )
+                                (call %init_peer_id% ("op" "noop") [])
+                               )
+                               (next record-0)
+                              )
+                             )
+                             (null)
+                            )
+                           )
+                           (par
+                            (call %init_peer_id% ("op" "noop") [$responses.$.[19]!])
+                            (call %init_peer_id% ("peer" "timeout") [7000 "timeout"])
+                           )
+                          )
+                          (call %init_peer_id% ("op" "identity") [$products] products-fix)
                          )
-                         (call -relay- ("op" "noop") [])
-                        )
-                        (seq
-                         (seq
-                          (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
-                          (call -relay- ("op" "noop") [])
-                         )
-                         (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
                         )
                        )
                       )
                       (xor
-                       (call %init_peer_id% ("callbackSrv" "response") [res])
+                       (call %init_peer_id% ("callbackSrv" "response") [products-fix])
+                       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 6])
+                      )
+                     )
+                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 7])
+                    )
+    `
+    return callFunction(
+        args,
+        {
+    "functionName" : "retrieve_products_by_keyword_from_network",
+    "arrow" : {
+        "tag" : "arrow",
+        "domain" : {
+            "tag" : "labeledProduct",
+            "fields" : {
+                "resource_id" : {
+                    "tag" : "scalar",
+                    "name" : "string"
+                },
+                "keyword" : {
+                    "tag" : "scalar",
+                    "name" : "string"
+                }
+            }
+        },
+        "codomain" : {
+            "tag" : "unlabeledProduct",
+            "items" : [
+                {
+                    "tag" : "array",
+                    "type" : {
+                        "tag" : "struct",
+                        "name" : "Product",
+                        "fields" : {
+                            "peerId" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "price" : {
+                                "tag" : "scalar",
+                                "name" : "u32"
+                            },
+                            "id" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "address" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "title" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "names" : {
+        "relay" : "-relay-",
+        "getDataSrv" : "getDataSrv",
+        "callbackSrv" : "callbackSrv",
+        "responseSrv" : "callbackSrv",
+        "responseFnName" : "response",
+        "errorHandlingSrv" : "errorHandlingSrv",
+        "errorFnName" : "error"
+    }
+},
+        script
+    )
+}
+
+ 
+
+export function get_products_from_peer(
+    peerId: string,
+    config?: {ttl?: number}
+): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[][]>;
+
+export function get_products_from_peer(
+    peer: FluencePeer,
+    peerId: string,
+    config?: {ttl?: number}
+): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[][]>;
+
+export function get_products_from_peer(...args: any) {
+
+    let script = `
+                    (xor
+                     (seq
+                      (seq
+                       (seq
+                        (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                        (call %init_peer_id% ("getDataSrv" "peerId") [] peerId)
+                       )
+                       (new $products
+                        (seq
+                         (seq
+                          (seq
+                           (call -relay- ("op" "noop") [])
+                           (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                          )
+                          (xor
+                           (seq
+                            (seq
+                             (call peerId ("shopservice" "list") [] $products)
+                             (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                            )
+                            (call -relay- ("op" "noop") [])
+                           )
+                           (seq
+                            (seq
+                             (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("op" "noop") [])
+                             (call -relay- ("op" "noop") [])
+                            )
+                            (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                           )
+                          )
+                         )
+                         (call %init_peer_id% ("op" "identity") [$products] products-fix)
+                        )
+                       )
+                      )
+                      (xor
+                       (call %init_peer_id% ("callbackSrv" "response") [products-fix])
                        (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
                       )
                      )
@@ -74,7 +626,7 @@ export function get_products(...args: any) {
     return callFunction(
         args,
         {
-    "functionName" : "get_products",
+    "functionName" : "get_products_from_peer",
     "arrow" : {
         "tag" : "arrow",
         "domain" : {
@@ -92,24 +644,31 @@ export function get_products(...args: any) {
                 {
                     "tag" : "array",
                     "type" : {
-                        "tag" : "struct",
-                        "name" : "Product",
-                        "fields" : {
-                            "address" : {
-                                "tag" : "scalar",
-                                "name" : "string"
-                            },
-                            "id" : {
-                                "tag" : "scalar",
-                                "name" : "string"
-                            },
-                            "price" : {
-                                "tag" : "scalar",
-                                "name" : "u32"
-                            },
-                            "title" : {
-                                "tag" : "scalar",
-                                "name" : "string"
+                        "tag" : "array",
+                        "type" : {
+                            "tag" : "struct",
+                            "name" : "Product",
+                            "fields" : {
+                                "peerId" : {
+                                    "tag" : "scalar",
+                                    "name" : "string"
+                                },
+                                "price" : {
+                                    "tag" : "scalar",
+                                    "name" : "u32"
+                                },
+                                "id" : {
+                                    "tag" : "scalar",
+                                    "name" : "string"
+                                },
+                                "address" : {
+                                    "tag" : "scalar",
+                                    "name" : "string"
+                                },
+                                "title" : {
+                                    "tag" : "scalar",
+                                    "name" : "string"
+                                }
                             }
                         }
                     }

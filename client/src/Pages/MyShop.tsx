@@ -13,6 +13,8 @@ import { ethers } from 'ethers';
 import useSequence from '../Hook/useSequence';
 import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
 
+import logo from '../assets/zero-1.png';
+
 const MyShop = () => {
 
   const [open, isOpen] = useState(false)
@@ -124,7 +126,9 @@ const MyShop = () => {
   }
 
   return (
-    <Container>
+    <div style={{height: '100%'}}>
+      <img style={{display: 'flex', position: 'absolute', bottom: 0, zIndex: -999, opacity: 0.1, width: '100%', maxWidth: '100%', maxHeight: '100%'}} src={logo} alt="Bazaar Zero"/>
+      <Container>
       <Row className="mt-xl">
         <Col sm={3}>
           <CreateBoxButton onClick={toggleCreateDialog} />
@@ -148,6 +152,7 @@ const MyShop = () => {
         <WalletItemDrawer handleClose={handleClose} isOpen={open} selectedBundleId={selectedBundleId} />
       </Row>
     </Container>
+  </div>
   )
 }
 

@@ -1,11 +1,58 @@
 import "shop_service.aqua"
 import "@fluencelabs/aqua-lib/builtin.aqua"
+import "@fluencelabs/registry/resources-api.aqua"
+import "@fluencelabs/registry/registry-service.aqua"
 
 const RELAY ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
 const SHOP_SERVICE_ID ?= "shopservice"
 
-func get_products(peerId: PeerId) -> []Product :
+func get_products_from_peer(peerId: PeerId) -> [][]Product :
+  products: *[]Product
   on peerId via RELAY:
-    ShopService SHOP_SERVICE_ID
-    res <- ShopService.list()
-  <- res
+      ShopService SHOP_SERVICE_ID
+      products <- ShopService.list()
+  <- products
+
+func retrieve_products_by_keyword_from_network(resource_id: string, keyword: string) -> []Product :
+  products: *Product
+  responses: *string
+
+  providers <- resolveProviders(resource_id, 2)
+  for record <- providers par:
+    on RELAY:
+      if Peer.is_connected(record.peer_id):
+        on record.peer_id:
+          ShopService SHOP_SERVICE_ID
+          prods <- ShopService.list_by_keyword(keyword)
+          for p <- prods:
+            products <<- p
+
+          responses <<- "ok"
+  
+  join responses[19]
+  -- To prevent from the dead peer, do race pattern
+  par Peer.timeout(7000, "timeout")
+
+  <- products
+
+func retrieve_products_from_network(resource_id: string) -> []Product :
+  products: *Product
+  responses: *string
+
+  providers <- resolveProviders(resource_id, 2)
+  for record <- providers par:
+    on RELAY:
+      if Peer.is_connected(record.peer_id):
+        on record.peer_id:
+          ShopService SHOP_SERVICE_ID
+          prods <- ShopService.list()
+          for p <- prods:
+            products <<- p
+
+          responses <<- "ok"
+  
+  join responses[19]
+  -- To prevent from the dead peer, do race pattern
+  par Peer.timeout(7000, "timeout")
+
+  <- products

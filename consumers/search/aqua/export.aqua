@@ -1,0 +1,3 @@
+module Export
+import resolveProviders from "@fluencelabs/registry/resources-api.aqua"
+export resolveProviders
