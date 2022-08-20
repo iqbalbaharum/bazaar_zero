@@ -1816,6 +1816,13 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@fluencelabs/aqua-dht@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@fluencelabs/aqua-dht/-/aqua-dht-0.2.5.tgz#ab14a8c5267fb1f9d270b9932da26241cad9195b"
+  integrity sha512-8jWUCeAftRtafqD6MgC7vkCnLOD6pwJspGHykPbXpg2pKbwANAAzAb/w8XbIScBzbIonZ5N7FfSVlTet383A3w==
+  dependencies:
+    "@fluencelabs/aqua-lib" "^0.1.14"
+
 "@fluencelabs/aqua-ipfs@0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@fluencelabs/aqua-ipfs/-/aqua-ipfs-0.5.2.tgz#a3fd18eaae32568f2046eae0a8b04d51906b770d"
@@ -1833,7 +1840,7 @@
   resolved "https://registry.yarnpkg.com/@fluencelabs/aqua-lib/-/aqua-lib-0.1.14.tgz#55b9624f173b570b306d36de01006eef27b2fb9a"
   integrity sha512-H2Q4gIvociUxc4J2mwmH0D+mrU2N2Z+enKCHgBCanMVEE2wZDsZ80GTbDKsQjEq+gpqbnJIk8lJBYW6lyvLJTg==
 
-"@fluencelabs/aqua-lib@^0.5.2":
+"@fluencelabs/aqua-lib@^0.5.1", "@fluencelabs/aqua-lib@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@fluencelabs/aqua-lib/-/aqua-lib-0.5.2.tgz#889942a286efdc999a6ed976329a4439e9faebe4"
   integrity sha512-fmoFFE8myhLH9d+YR0+0ZPL2YIQyR6M1woAGu5d1xXI02Sjzn4id6dE4PpxHb8cSBPRie8AwsKobHCNqGxI8oA==
@@ -1944,6 +1951,21 @@
     buffer "^6.0.3"
     threads "^1.7.0"
     ts-jest "^27.1.4"
+
+"@fluencelabs/registry@^0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@fluencelabs/registry/-/registry-0.5.5.tgz#359a727e513717ec1bda17dd0b996839887f9ce3"
+  integrity sha512-DPDBP0WeomrLmpMp+FIDiJ8xZywoh1aBH/pJj2TYxSd4f+IxqjYvJbZiYOiBfmbqp2I2hPm/zGskGU1wjBVwbg==
+  dependencies:
+    "@fluencelabs/aqua-lib" "^0.5.1"
+    "@fluencelabs/trust-graph" "^3.0.1"
+
+"@fluencelabs/trust-graph@^3.0.1":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@fluencelabs/trust-graph/-/trust-graph-3.0.4.tgz#48042a4f335ddf2591df09132637e8e5405c5b02"
+  integrity sha512-4CWe/dBuZwrj5iU6mTrLz5JCSy5v1fw7dYjD65Pz05xWAbLH2jw72YIJfbMX0utzb1qiM8CooXv1XKPgutCIHQ==
+  dependencies:
+    "@fluencelabs/aqua-lib" "^0.5.2"
 
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"

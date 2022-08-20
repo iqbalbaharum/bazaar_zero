@@ -17,8 +17,8 @@ import {
 // Services
 
 export interface ShopServiceDef {
-    list: (callParams: CallParams<null>) => { address: string; id: string; price: number; title: string; }[] | Promise<{ address: string; id: string; price: number; title: string; }[]>;
-    list_by_keyword: (search: string, callParams: CallParams<'search'>) => { address: string; id: string; price: number; title: string; }[] | Promise<{ address: string; id: string; price: number; title: string; }[]>;
+    list: (callParams: CallParams<null>) => { address: string; id: string; peerId: string; price: number; title: string; }[] | Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+    list_by_keyword: (search: string, callParams: CallParams<'search'>) => { address: string; id: string; peerId: string; price: number; title: string; }[] | Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
 }
 export function registerShopService(serviceId: string, service: ShopServiceDef): void;
 export function registerShopService(peer: FluencePeer, serviceId: string, service: ShopServiceDef): void;
@@ -45,17 +45,21 @@ export function registerShopService(...args: any) {
                                 "tag" : "struct",
                                 "name" : "Product",
                                 "fields" : {
-                                    "address" : {
-                                        "tag" : "scalar",
-                                        "name" : "string"
-                                    },
-                                    "id" : {
+                                    "peerId" : {
                                         "tag" : "scalar",
                                         "name" : "string"
                                     },
                                     "price" : {
                                         "tag" : "scalar",
                                         "name" : "u32"
+                                    },
+                                    "id" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    },
+                                    "address" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
                                     },
                                     "title" : {
                                         "tag" : "scalar",
@@ -87,17 +91,21 @@ export function registerShopService(...args: any) {
                                 "tag" : "struct",
                                 "name" : "Product",
                                 "fields" : {
-                                    "address" : {
-                                        "tag" : "scalar",
-                                        "name" : "string"
-                                    },
-                                    "id" : {
+                                    "peerId" : {
                                         "tag" : "scalar",
                                         "name" : "string"
                                     },
                                     "price" : {
                                         "tag" : "scalar",
                                         "name" : "u32"
+                                    },
+                                    "id" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
+                                    },
+                                    "address" : {
+                                        "tag" : "scalar",
+                                        "name" : "string"
                                     },
                                     "title" : {
                                         "tag" : "scalar",

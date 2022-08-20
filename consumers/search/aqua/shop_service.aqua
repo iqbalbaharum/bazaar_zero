@@ -5,6 +5,7 @@ data Product:
   id: string
   title: string
   price: u32
+  peerId: string
 
 service ShopService:
   list() -> []Product
