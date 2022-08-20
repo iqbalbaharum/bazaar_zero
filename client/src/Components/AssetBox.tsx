@@ -14,7 +14,7 @@ const AssetBox: React.FC<AssetDataProp> = (data: AssetDataProp) => {
     <Card elevation={Elevation.TWO}>
       <h5><a href="">{data.title}</a></h5>
       <p><b>Type: </b>{data.type}</p>
-      <SellButtonWithDialog buttonText="Add To Bundle" title={data.title} />
+      <SellButtonWithDialog bundleId={data.title} onSell={() => console.log('sell')} buttonText="Add To Bundle" title={data.title} />
     </Card>
   )
 }

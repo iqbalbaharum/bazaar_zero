@@ -2,18 +2,27 @@ import * as React from 'react';
 import {useState, useCallback} from 'react'
 import {DialogProps, Dialog, Button, Classes, InputGroup, Icon} from '@blueprintjs/core'
 
-const SellButtonWithDialog: React.FC<Omit<DialogProps, "isOpen"> & { buttonText: string }> = ({ ...props }: Omit<DialogProps, "isOpen"> & { buttonText: string }) => {
+const SellButtonWithDialog: React.FC<Omit<DialogProps, "isOpen"> & { buttonText: string, onSell: any, bundleId: any }> = ({ ...props }: Omit<DialogProps, "isOpen"> & { buttonText: string, onSell: any, bundleId: any }) => {
   
   const [isOpen, setIsOpen] = useState(false)
   const [price, setPrice] = useState(0)
   
-  const handleClose = useCallback(() => setIsOpen(false), [])
+  const handleClose = useCallback(() => {
+    setIsOpen(false)
+  }, [])
   const handleButtonClick = useCallback(() => {
     setPrice(0)
     setIsOpen(true)
   }, [])
 
-  const onPriceChanged =(event: any) => setPrice(event.target.value)
+  const onPriceChanged =(event: any) => {
+    setPrice(event.target.value)
+  }
+
+  const handleListing = () => {
+    props.onSell(props.bundleId, price)
+    setIsOpen(false)
+  }
 
   return (
     <div>
@@ -28,17 +37,17 @@ const SellButtonWithDialog: React.FC<Omit<DialogProps, "isOpen"> & { buttonText:
               value={price.toString()}
           />
         </div>
-        <DialogFooter handleClose={handleClose} />
+        <DialogFooter handleClose={handleClose} handleListing={handleListing}  />
       </Dialog>
     </div>
   )
 }
 
-function DialogFooter(props: { handleClose: (e: React.MouseEvent) => void }) {
+function DialogFooter(props: { handleClose: (e: React.MouseEvent) => void, handleListing: (e: React.MouseEvent) => void }) {
   return (
       <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button intent="success" onClick={props.handleClose}>Start Listing</Button>
+            <Button intent="success" onClick={props.handleListing}>Start Listing</Button>
             <Button onClick={props.handleClose}>Cancel</Button>
           </div>
       </div>
