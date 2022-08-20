@@ -8,6 +8,7 @@ import { sequence } from '0xsequence'
 import { Fluence } from '@fluencelabs/fluence';
 import { krasnodar } from '@fluencelabs/fluence-network-environment';
 import NavLayout from './Layout/NavLayout';
+import { registerShopService } from './_aqua/shop_service';
 
 function App() {
 
@@ -19,14 +20,6 @@ function App() {
     const network = 'polygon'
     sequence.initWallet(network, { walletAppURL })
     isInit(true)
-
-    setTimeout(() => {
-      Fluence.start({ connectTo: krasnodar[0] })
-      .then(e => console.log(Fluence.getStatus()))
-      .catch(e => {
-        console.log(e)
-      })
-    }, 1000)
   }, [isInit])
 
   return (

@@ -66,7 +66,7 @@ const MyShop = () => {
         
         {nfts.map((nft) => 
           (
-            <Col sm={3}>
+            <Col sm={3} key={nft.tokenID}>
             <ListedProductBox
               title={nft.tokenMetadata?.name as string}
               description={`Bundle #${nft.tokenID}`}

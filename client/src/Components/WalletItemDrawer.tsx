@@ -124,7 +124,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
         <div>
         {assets.map((asset) => {
           return (
-            <NFTCard asset={asset} onClick={() => onHandleAssetSelected(asset)} />
+            <NFTCard key={asset.tokenId as string} asset={asset} onClick={() => onHandleAssetSelected(asset)} />
           )
         })}
         </div>

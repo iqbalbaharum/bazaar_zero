@@ -296,3 +296,88 @@ export function is_member(...args: any) {
         script
     )
 }
+
+ 
+
+export function get_products(
+    config?: {ttl?: number}
+): Promise<{ address: string; id: string; price: number; title: string; }[]>;
+
+export function get_products(
+    peer: FluencePeer,
+    config?: {ttl?: number}
+): Promise<{ address: string; id: string; price: number; title: string; }[]>;
+
+export function get_products(...args: any) {
+
+    let script = `
+                    (xor
+                     (seq
+                      (seq
+                       (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                       (call %init_peer_id% ("shopservice" "list") [] res)
+                      )
+                      (xor
+                       (call %init_peer_id% ("callbackSrv" "response") [res])
+                       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                      )
+                     )
+                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
+                    )
+    `
+    return callFunction(
+        args,
+        {
+    "functionName" : "get_products",
+    "arrow" : {
+        "tag" : "arrow",
+        "domain" : {
+            "tag" : "labeledProduct",
+            "fields" : {
+                
+            }
+        },
+        "codomain" : {
+            "tag" : "unlabeledProduct",
+            "items" : [
+                {
+                    "tag" : "array",
+                    "type" : {
+                        "tag" : "struct",
+                        "name" : "Product",
+                        "fields" : {
+                            "address" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "id" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            },
+                            "price" : {
+                                "tag" : "scalar",
+                                "name" : "u32"
+                            },
+                            "title" : {
+                                "tag" : "scalar",
+                                "name" : "string"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "names" : {
+        "relay" : "-relay-",
+        "getDataSrv" : "getDataSrv",
+        "callbackSrv" : "callbackSrv",
+        "responseSrv" : "callbackSrv",
+        "responseFnName" : "response",
+        "errorHandlingSrv" : "errorHandlingSrv",
+        "errorFnName" : "error"
+    }
+},
+        script
+    )
+}

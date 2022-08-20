@@ -7,6 +7,7 @@ import { useEthers } from '@usedapp/core';
 
 import { Fluence } from '@fluencelabs/fluence';
 import { krasnodar } from '@fluencelabs/fluence-network-environment';
+import FluenceService from './FluenceService';
 
 const Navigation = () => {
 
@@ -31,8 +32,8 @@ const Navigation = () => {
           .then(() => {
             clearInterval(id);
             setIsFluenceConnected(true)
+            console.log(Fluence.getPeer().getStatus())
           })
-    
       }, 10000)  
     }
     
@@ -51,7 +52,9 @@ const Navigation = () => {
 
   const ConnectedText = () => {
     return (
-      <strong style={{color:"green"}}>Connected <Icon icon="tick-circle" color="green" /> </strong>
+      <strong style={{color:"green"}}>
+        Connected <Icon icon="tick-circle" color="green" /> 
+      </strong>
     )
   }
 
@@ -67,6 +70,7 @@ const Navigation = () => {
         <NavbarDivider />
         <NavbarHeading>{!isFluenceConnected ? <ConnectingText /> : <ConnectedText />}</NavbarHeading>
       </NavbarGroup>
+      {isFluenceConnected && <FluenceService />}
     </Navbar>
   )
 }
