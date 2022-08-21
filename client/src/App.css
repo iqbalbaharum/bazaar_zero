@@ -28,17 +28,29 @@
   height: 250px;
   width: 100%;
   display: flex;
+  background-color: 'white';
+  box-shadow: 0 0 0 1px rgb(17 20 24 / 10%), 0 4px 8px rgb(17 20 24 / 20%), 0 18px 46px 6px rgb(17 20 24 / 20%);
+}
+
+.z-box-header {
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+}
+
+.z-box-content {
 }
 
 .z-box-inner {
-  align-items: center;
-  justify-content: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .z-box-footer {
-  display: inline-block;
-  align-self: flex-end;
-  position: absolute;
+  display: flex;
+  padding: 20px;
 }
 
 /* POSITION */
@@ -87,4 +99,10 @@
 .scroll {
   overflow-y: scroll;
   height: 100vh;
+}
+
+/* DISPLAY */
+.display-erc20 {
+  height: 100px;
+  width: 100px;
 }

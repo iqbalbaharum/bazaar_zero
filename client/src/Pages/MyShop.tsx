@@ -7,13 +7,13 @@ import ListedProductBox from '../Components/ListedProductBox';
 import CreateBoxButton from '../Components/CreateBoxButton';
 import WalletItemDrawer from '../Components/WalletItemDrawer';
 import CreateBoxDialog from '../Components/CreateBoxDialog';
-import SellButtonWithDialog from '../Components/SellButtonWithDialog'
 import { sequence } from '0xsequence';
 import { ethers } from 'ethers';
 import useSequence from '../Hook/useSequence';
 import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
 
 import logo from '../assets/zero-1.png';
+import BundleDrawer from '../Components/BundleDrawer';
 
 const MyShop = () => {
 
@@ -43,7 +43,6 @@ const MyShop = () => {
           includeMetadata: true,
           contractAddress: process.env.REACT_APP_CONTRACT_ASSET_WRAPPER
         })
-        console.log({wrappedNFTs})
 
         const arrAssets: any = []
         for (let asset of wrappedNFTs.balances) {
@@ -91,7 +90,6 @@ const MyShop = () => {
 
   const toggleDrawer = (bundleId: string) => {
     if(!open) {
-      console.log(bundleId)
       setSelectedBundleId(bundleId)
     }
 
@@ -102,33 +100,10 @@ const MyShop = () => {
     isCreateDialogOpened(!createDialogOpen)
   }
 
-  const onSell = async (bundleId, price) => {
-    console.log("sell: " + price)
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-
-      const gasPrice = await provider.getGasPrice()
-      const gas_price = Math.round(gasPrice.toNumber() * 1.2)
-      console.log({ gas_price })
-
-      const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
-      const estimate = await contract.estimateGas.sell(bundleId, ethers.utils.parseUnits(price, 'ether'), sequenceWallet.account)
-      // console.log({estimate: BigInt(estimate)})
-      await contract.sell(bundleId, ethers.utils.parseUnits(price, 'ether'), sequenceWallet.account, {
-        gasPrice: gas_price,
-        gasLimit: Math.round(estimate.toNumber() * 2)
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   return (
-    <div style={{height: '100%'}}>
+    <div style={{height: '100%' }}>
       <img style={{display: 'flex', position: 'absolute', bottom: 0, zIndex: -999, opacity: 0.1, width: '100%', maxWidth: '100%', maxHeight: '100%'}} src={logo} alt="Bazaar Zero"/>
-      <Container>
+      <Container fluid>
       <Row className="mt-xl">
         <Col sm={3}>
           <CreateBoxButton onClick={toggleCreateDialog} />
@@ -139,11 +114,11 @@ const MyShop = () => {
             <Col sm={3} key={nft.tokenID}>
             <ListedProductBox
               asset={nft}
-              title={nft.tokenMetadata?.name as string}
+              title={`Bundle #${nft.tokenID}`}
               description={`Bundle #${nft.tokenID}`}
-              onClick={() => toggleDrawer(nft.tokenID)} />
-              <br />
-              <SellButtonWithDialog bundleId={nft.tokenID} onSell={(bundleId, price) => onSell(bundleId, price)} buttonText='Sell' />
+              onClick={() => toggleDrawer(nft.tokenID)}
+              bundleId={nft.tokenID}
+              />
             </Col>
           )
         )}

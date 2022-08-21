@@ -11,7 +11,7 @@ import { Fluence } from '@fluencelabs/fluence';
 import { krasnodar } from '@fluencelabs/fluence-network-environment';
 import FluenceService from './FluenceService';
 
-import { registerProvider, resolveProviders } from '../_aqua/export';
+import { createResource, registerProvider, resolveProviders } from '../_aqua/export';
 import logo from '../assets/bazaar-zer0-logo.png';
 
 const Navigation = () => {
@@ -28,12 +28,11 @@ const Navigation = () => {
     let id: any
     
     const registerDiscovery = async () => {
+
       const [success, error] = await registerProvider(
-        "DOSASeller12D3KooWEY2Q7TmhSciBtrjhNyDTC3dKfmC4FSETYCZ5K1G27SN3",
+        "DOSASeller12D3KooWFFNCaJMb4TuQpAZbdAuk18H95e8acjQcFL2RWuJppS8o",
         "Seller",
         "shopservice");
-        
-      console.log(success, error)
     }
 
     if(!isFluenceConnected) {

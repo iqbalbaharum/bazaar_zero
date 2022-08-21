@@ -9,7 +9,8 @@ interface ProductItem {
   address: string
   id: string
   price: number
-  title: string  
+  title: string
+  peerId: string
 }
 
 const FluenceService = () => {
@@ -32,7 +33,8 @@ const FluenceService = () => {
             address: nft.contractAddress,
             id: nft.tokenID,
             title: `Bundle #${nft.tokenID}`,
-            price: 0
+            price: 0,
+            peerId: Fluence.getStatus().peerId
           }
         }) as ProductItem[]
       } else {

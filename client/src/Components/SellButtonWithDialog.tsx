@@ -25,8 +25,8 @@ const SellButtonWithDialog: React.FC<Omit<DialogProps, "isOpen"> & { buttonText:
   }
 
   return (
-    <div>
-      <Button intent="danger" rightIcon="arrow-right" onClick={handleButtonClick} text={props.buttonText} />
+    <>
+      <Button intent="danger" onClick={handleButtonClick} text={props.buttonText} />
       <Dialog {...props} isOpen={isOpen} onClose={handleClose}>
         <div className={Classes.DIALOG_BODY}>
           <InputGroup
@@ -39,7 +39,7 @@ const SellButtonWithDialog: React.FC<Omit<DialogProps, "isOpen"> & { buttonText:
         </div>
         <DialogFooter handleClose={handleClose} handleListing={handleListing}  />
       </Dialog>
-    </div>
+    </>
   )
 }
 

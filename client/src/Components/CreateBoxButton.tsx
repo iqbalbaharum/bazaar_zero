@@ -15,7 +15,7 @@ const CreateBoxButton: React.FC<Prop> = (prop: Prop) => {
       style={{textAlign:"center",backgroundColor: "black", color: "white"}}
       onClick={prop.onClick}
       >
-      <div className="z-box-inner">
+      <div className="z-box-inner-central">
         <Icon icon="plus" size={IconSize.LARGE} />
         <p>Create Box</p>
       </div>

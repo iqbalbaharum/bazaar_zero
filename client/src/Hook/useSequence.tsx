@@ -4,11 +4,15 @@ import { useEffect, useState } from 'react'
 const useSequence = () => {
 
   const [account, setAccount] = useState('')
+  const [wallet, setWallet] = useState<Wallet>()
 
   useEffect(() => {
     const getWallet = async (wallet: Wallet) => {
       const address = await wallet.getAddress()
+      let signer = wallet.getSigner()
+
       setAccount(address)
+      setWallet(wallet)
     }
 
     let wallet = sequence.getWallet()
@@ -20,7 +24,8 @@ const useSequence = () => {
   }, [])
 
   return {
-    account
+    account,
+    wallet
   }
 }
 

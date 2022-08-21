@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
-import { Drawer, Button, Position, Divider, H4, NumericInput, FormGroup } from "@blueprintjs/core";
+import { Drawer, Button, Position, Tabs, H4, Tab, FormGroup } from "@blueprintjs/core";
 import { addressEqual, ERC20, useEthers } from '@usedapp/core';
 import NFTCard from './NFTCard';
 import useSequence from '../Hook/useSequence';
 import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
 import { sequence } from '0xsequence';
 import { ethers } from 'ethers';
+
+import erc721abi from "../artifacts/erc721.json"
+import erc20abi from "../artifacts/erc20.json"
+import erc1155abi from "../artifacts/erc1155.json"
+import TabERC20 from './Tabs/TabERC20';
+import TabNFT from './Tabs/TabNFT';
 
 type Prop = {
   isOpen?: boolean,
@@ -122,107 +128,114 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
     )
   }
 
-  const onDeposit = async () => {
-    console.log({asset, amount})
+  // const onDeposit = async () => {
+  //   console.log({asset, amount})
 
-    try {
-      setIsLoading(true)
+  //   try {
+  //     setIsLoading(true)
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  //     await provider.send("eth_requestAccounts", []);
+  //     const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
+  //     const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
 
-      let account = await signer.getAddress()
+  //     let account = await signer.getAddress()
 
-      const gasPrice = await provider.getGasPrice()
-      const gas_price = Math.round(gasPrice.toNumber() * 1.2)
-      console.log({ gas_price })
+  //     const gasPrice = await provider.getGasPrice()
+  //     const gas_price = Math.round(gasPrice.toNumber() * 1.2)
+  //     console.log({ gas_price })
 
-      // let deposit: any
-      let abiERC20 = ["function approve(address _spender, uint256 _value) public returns (bool success)"]
-      let abiERC721 = ["function approve(address to, uint256 tokenId) public returns (bool success)"]
-      let abiERC1155 = ["function setApprovalForAll(address operator, bool approved) public"]
+  //     // let deposit: any
+  //     let abiERC20 = erc20abi
+  //     let abiERC721 = erc721abi
+  //     let abiERC1155 = erc1155abi
 
-      let parseAmt: any, appContract: any, estimate: any
-      for (let ass of selectedAssets) {
-        switch (ass?.contractType) {
-          case "ERC20":
-            parseAmt = ethers.utils.parseUnits(`${amount[String(ass.contractAddress)]}`, 'ether');
-            appContract = new ethers.Contract(ass.contractAddress as string, abiERC20, signer)
-            await appContract.approve(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, parseAmt)
-            estimate = await contract.estimateGas.depositERC20(ass.contractAddress, parseAmt, prop.selectedBundleId, ass.name)
-            console.log({estimate: BigInt(estimate)})
-            await contract.depositERC20(ass.contractAddress, parseAmt, prop.selectedBundleId, ass.name, {
-              gasPrice: gas_price,
-              gasLimit: Math.round(estimate.toNumber() * 2)
-            })
-            break;
-          case "ERC721":
-            appContract = new ethers.Contract(ass.contractAddress as string, abiERC721, signer)
-            await appContract.approve(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, ass.tokenId)
-            estimate = await contract.estimateGas.depositERC721(ass.contractAddress, ass.tokenId, prop.selectedBundleId, ass.name)
-            console.log({estimate: BigInt(estimate)})
-            await contract.depositERC721(ass.contractAddress, ass.tokenId, prop.selectedBundleId, ass.name, {
-              gasPrice: gas_price,
-              gasLimit: Math.round(estimate.toNumber() * 2)
-            })
-  
-            break;
-          case "ERC1155":
-            parseAmt = amount[String(ass.contractAddress)]
-            // parseAmt = ethers.utils.parseUnits(`${amount[String(ass.contractAddress)]}`, 'ether');
-            appContract = new ethers.Contract(ass.contractAddress as string, abiERC1155, signer)
-            const est = await appContract.estimateGas.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true)
-            await appContract.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true, {
-              gasPrice: gas_price,
-              gasLimit: Math.round(est.toNumber() * 2)
-            })
-            estimate = await contract.estimateGas.depositERC1155(ass.contractAddress, ass.tokenId, parseAmt, prop.selectedBundleId, "ERC1155")
-            console.log({estimate: BigInt(estimate)})
-            await contract.depositERC1155(ass.contractAddress, ass.tokenId, parseAmt, prop.selectedBundleId, "ERC1155", {
-              gasPrice: gas_price,
-              gasLimit: Math.round(estimate.toNumber() * 2)
-            })
-            break;   
-        }
-      }
-      // var gas_estimate = await deposit.estimateGas({ from: account })
-      // gas_estimate = Math.round(gas_estimate * 1.2); 
+  //     let parseAmt: any, appContract: any, estimate: any
+      
+  //     for (let ass of selectedAssets) {
+  //       switch (ass?.contractType) {
+  //         case "ERC20":
+  //           parseAmt = ethers.utils.parseUnits(`${amount[String(ass.contractAddress)]}`, 'ether');
+  //           appContract = new ethers.Contract(ass.contractAddress as string, abiERC20, signer)
+  //           await appContract.approve(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, parseAmt)
+  //           estimate = await contract.estimateGas.depositERC20(ass.contractAddress, parseAmt, prop.selectedBundleId, ass.name)
+  //           console.log({estimate: BigInt(estimate)})
+  //           await contract.depositERC20(ass.contractAddress, parseAmt, prop.selectedBundleId, ass.name, {
+  //             gasPrice: gas_price,
+  //             gasLimit: Math.round(estimate.toNumber() * 2)
+  //           })
+  //           break;
+  //         case "ERC721":
+  //           appContract = new ethers.Contract(ass.contractAddress as string, abiERC721, signer)
 
-      // console.log({account, gas_price, gas_estimate})
+  //           const is721Allowed = await appContract.isApprovedForAll(account, process.env.REACT_APP_CONTRACT_ASSET_WRAPPER)
+  //           if(!is721Allowed) {
+  //             await appContract.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true)
+  //           }
+            
+  //           estimate = await contract.estimateGas.depositERC721(ass.contractAddress, ass.tokenId, prop.selectedBundleId, ass.name)
 
-      // deposit.se
+  //           await contract.depositERC721(
+  //             ass.contractAddress, 
+  //             ass.tokenId,
+  //             prop.selectedBundleId,
+  //             ass.name)
+
+  //           break;
+  //         case "ERC1155":
+  //           parseAmt = amount[String(ass.contractAddress)]
+  //           // parseAmt = ethers.utils.parseUnits(`${amount[String(ass.contractAddress)]}`, 'ether');
+  //           appContract = new ethers.Contract(ass.contractAddress as string, abiERC1155, signer)
+  //           let is1155Allowed = appContract.isApprovedForAll(account, process.env.REACT_APP_CONTRACT_ASSET_WRAPPER)
+  //           if(!is1155Allowed) {
+  //             await appContract.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true)
+  //           }
+            
+  //           estimate = await contract.estimateGas.depositERC1155(ass.contractAddress, ass.tokenId, parseAmt, prop.selectedBundleId, "ERC1155")
+            
+  //           await contract.depositERC1155(ass.contractAddress, ass.tokenId, parseAmt, prop.selectedBundleId, "ERC1155", {
+  //             gasPrice: gas_price,
+  //             gasLimit: Math.round(estimate.toNumber() * 2)
+  //           })
+  //           break;   
+  //       }
+  //     }
+  //     // var gas_estimate = await deposit.estimateGas({ from: account })
+  //     // gas_estimate = Math.round(gas_estimate * 1.2); 
+
+  //     // console.log({account, gas_price, gas_estimate})
+
+  //     // deposit.se
 
 
-    } catch (e) {
-      console.log(e)
-    } finally {
-      setTimeout(async () => {
-        indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON_MUMBAI)
-        const tokens = await indexer.getTokenBalances({
-          accountAddress: ether.account,
-          includeMetadata: true
-        })
-        setAssets(tokens.balances.map((asset: any) => {
-          return {
-            contractAddress: asset.contractAddress,
-            contractType: asset.contractType,
-            tokenId: asset.tokenID,
-            balance: asset.balance,
-            name: asset.contractInfo?.name,
-            symbol: asset.contractInfo?.symbol,
-            chain: {
-              id: asset.chainId,
-              name: 'mumbai'
-            }
-          } as AssetModel
-        }))
-        setIsLoading(false)
-      }, 5000)
-    }
-  }
+  //   } catch (e) {
+  //     console.log(e)
+  //   } finally {
+  //     setTimeout(async () => {
+  //       indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON_MUMBAI)
+  //       const tokens = await indexer.getTokenBalances({
+  //         accountAddress: ether.account,
+  //         includeMetadata: true
+  //       })
+  //       setAssets(tokens.balances.map((asset: any) => {
+  //         return {
+  //           contractAddress: asset.contractAddress,
+  //           contractType: asset.contractType,
+  //           tokenId: asset.tokenID,
+  //           balance: asset.balance,
+  //           name: asset.contractInfo?.name,
+  //           symbol: asset.contractInfo?.symbol,
+  //           chain: {
+  //             id: asset.chainId,
+  //             name: 'mumbai'
+  //           }
+  //         } as AssetModel
+  //       }))
+  //       setIsLoading(false)
+  //     }, 5000)
+  //   }
+  // }
 
   return (
     <Drawer
@@ -236,7 +249,17 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
     >
       <div className='z-drawer scroll'>
 
-        <SelectedAssets />
+      <Tabs
+          animate={true}
+          key={"horizontal"}
+          renderActiveTabPanelOnly={true}
+          vertical={false}
+      >
+          <Tab id="rx" title="ERC20" panel={<TabERC20 selectedBundleId={prop.selectedBundleId} />} />
+          <Tab title="NFTs" panel={<TabNFT selectedBundleId={prop.selectedBundleId} />} />
+      </Tabs>
+      
+        {/* <SelectedAssets />
         <Button loading={isLoading} large={true} className="w-100 mb-5" text='Deposit' intent='primary' onClick={() => onDeposit()} />
         <div>
         {assets.map((asset) => {
@@ -244,7 +267,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
             <NFTCard amount={amount} selected={false} setAmount={(address: string, amount: number) => setAmount({[address]: amount})} key={asset.tokenId as string} asset={asset} onClick={() => onHandleAssetSelected(asset)} />
           )
         })}
-        </div>
+        </div> */}
       </div>
     </Drawer>
   )
