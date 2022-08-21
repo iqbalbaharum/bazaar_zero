@@ -49,13 +49,14 @@ const TabERC20: React.FC<Prop> = (prop: Prop) => {
       const contractSequenceSigner  = new ethers.Contract(data.token_address as string, abiERC20, sequenceWallet.wallet?.getSigner())
 
       let allowanceInWrappedNFT = await appContract.allowance(account, process.env.REACT_APP_CONTRACT_ASSET_WRAPPER)
-      if(allowanceInWrappedNFT > ethers.utils.parseUnits(`${parseAmt}`, 'ether')) {
+
+      if(allowanceInWrappedNFT <= 0) {
         await appContract.approve(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, parseAmt)
       }
 
       let allowanceInSequenceWallet = await appContract.allowance(account, sequenceWallet.account)
 
-      if(allowanceInSequenceWallet > ethers.utils.parseUnits(`${parseAmt}`, 'ether')) {
+      if(allowanceInSequenceWallet <= 0) {
         await contractSequenceSigner.approve(sequenceWallet.account, parseAmt)
       }
 

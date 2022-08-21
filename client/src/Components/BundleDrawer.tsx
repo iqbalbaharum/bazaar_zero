@@ -10,8 +10,6 @@ interface Prop {
 
 const BundleDrawer = (prop: Prop) => {
 
-  console.log(prop)
-
   return (
     <Drawer
       title={`Bundle #${prop.asset.tokenID}`}
