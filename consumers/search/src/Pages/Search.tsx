@@ -40,15 +40,39 @@ const Search = () => {
   const onHandlePurchase = async (asset: AssetModel) => {
     if(!(window as any).ethereum) { return }
 
-    const provider = new ethers.providers.Web3Provider((window as any).ethereum, "any");
+    try {
+      const provider = new ethers.providers.Web3Provider((window as any).ethereum, "any");
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
 
       const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
+      
+      console.log('contract')
+
+      const estimate = await contract.estimateGas.buy(
+        parseInt(asset.id),
+        { value: ethers.utils.parseEther("1")  }
+      )
+
+      console.log('contract')
+
+      console.log('estimate', estimate)
+      
+      const gasPrice = await provider.getGasPrice()
+      const gas_price = Math.round(gasPrice.toNumber() * 1.2)
+
       await contract.buy(
         parseInt(asset.id),
-        { value: ethers.utils.parseEther("1") }
+        {
+          gasPrice: gas_price,
+          gasLimit: Math.round(estimate.toNumber() * 2),
+          value: ethers.utils.parseEther("1") 
+        }
       )
+    } catch(e) {
+      console.log(e)
+    }
+    
   }
 
   return (
