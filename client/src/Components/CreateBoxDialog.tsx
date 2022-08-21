@@ -16,17 +16,20 @@ type Prop = {
 }
 
 interface MintingState {
-  isProcessing: Boolean, 
+  process: 'START' | 'PROCESS' | 'END', 
   verified: Boolean,
-  minting: Boolean
+  minting: Boolean,
+  approving: Boolean,
+  errorText?: string
 }
 
 const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
 
   const [state, setState] = useState<MintingState>({
-    isProcessing: false,
+    process: 'START',
     verified: false,
-    minting: false
+    minting: false,
+    approving: false
   })
 
   const sequenceWallet = useSequence()
@@ -35,7 +38,8 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
 
     setState(e => ({
       ...e,
-      isProcessing: true
+      process: 'PROCESS',
+      errorText: ''
     }))
 
     try {
@@ -72,33 +76,36 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
       gas_estimate = Math.round(gas_estimate * 1.2); 
         
       console.log({gas_price, gas_estimate})
-
-      // await initBundle.send({
-      //   from: account,
-      //   gas: web3.utils.toHex(gas_estimate), 
-      //   gasPrice:  web3.utils.toHex(gas_price)
-      // })
-
+      
       setState(e => ({
         ...e,
         minting: true
       }))
 
+      await initBundle.wait()
+
+
+
     } catch (e) {
       console.log(e)
       setState({
-        isProcessing: false,
+        process: 'START',
         verified: false,
-        minting: false
+        minting: false,
+        approving: false,
+        errorText: (e as any).error.message as string
       })
+
+      console.log(state)
     }
   }
 
   const handleClose = () => {
     setState({
-      isProcessing: false,
+      process: 'START',
       verified: false,
-      minting: false
+      minting: false,
+      approving: false
     })
 
     prop.handleClose()
@@ -123,13 +130,19 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
         <Card elevation={Elevation.TWO} className='table-list' >
           Verify (Generate proof)
           <span className='icon-right'>
-            {state.isProcessing && <SpinnerCompletion flag={state.verified} />}
+            {state.process === 'PROCESS' && <SpinnerCompletion flag={state.verified} />}
           </span>
         </Card>
         <Card elevation={Elevation.TWO}className='table-list' >
           Minting
           <span className='icon-right'>
-          {state.isProcessing && <SpinnerCompletion flag={state.minting} />}
+          {state.process === 'PROCESS' && <SpinnerCompletion flag={state.minting} />}
+          </span>
+        </Card>
+        <Card elevation={Elevation.TWO}className='table-list' >
+          Approving {process.env.REACT_APP_CONTRACT_ASSET_WRAPPER}
+          <span className='icon-right'>
+          {state.process === 'PROCESS' && <SpinnerCompletion flag={state.approving} />}
           </span>
         </Card>
       </div>
@@ -140,9 +153,10 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
   function DialogFooter(props: { handleClose: (e: React.MouseEvent) => void }) {
     return (
         <div className={Classes.DIALOG_FOOTER}>
+            {state.errorText && <span style={{ color: 'red' }}>{state.errorText}</span>}
             <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-              <Button intent="success" onClick={mint}>Mint NFT</Button>
-              <Button onClick={props.handleClose}>Complete</Button>
+              <Button intent="success" onClick={mint} loading={state.process === 'PROCESS'}>Mint NFT</Button>
+              <Button onClick={props.handleClose} disabled={state.process === 'PROCESS'}>Close</Button>
             </div>
         </div>
     );
