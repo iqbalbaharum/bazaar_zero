@@ -4,13 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { Mumbai, DAppProvider, Config } from '@usedapp/core'
+import { Mumbai, Polygon, DAppProvider, Config } from '@usedapp/core'
 import { getDefaultProvider } from 'ethers'
 
 const config: Config = {
-  readOnlyChainId: Mumbai.chainId,
+  readOnlyChainId: Polygon.chainId,
   readOnlyUrls: {
-    [Mumbai.chainId]: getDefaultProvider('testnet'),
+    [Polygon.chainId]: getDefaultProvider("mainnet"),
   },
 }
 

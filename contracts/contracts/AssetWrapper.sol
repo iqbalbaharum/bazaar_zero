@@ -68,6 +68,7 @@ contract AssetWrapper is
     
     struct Bundle {
       address owner;
+      address og;
       uint256 bundleId;
       address nodeAddress;
       uint256 price;
@@ -143,6 +144,8 @@ contract AssetWrapper is
         bundles[_tokenId].owner = to;
         bundles[_tokenId].bundleId = _tokenId;
         bundles[_tokenId].title = title;
+        bundles[_tokenId].description = description;
+        bundles[_tokenId].og = msg.sender;
 
         emit ProofVerified(groupId, signal);
 
@@ -215,8 +218,9 @@ contract AssetWrapper is
 
         ERC20Holding[] memory erc20Holdings = bundles[bundleId].bundleERC20;
         for (uint256 i = 0; i < erc20Holdings.length; i++) {
+            IERC20(erc20Holdings[i].tokenAddress).approve(address(this), erc20Holdings[i].amount);
             SafeERC20.safeTransferFrom(IERC20(erc20Holdings[i].tokenAddress), 
-                _msgSender(), bundles[bundleId].owner, erc20Holdings[i].amount);
+                _msgSender(), bundles[bundleId].og, erc20Holdings[i].amount);
         }
         // delete bundleERC20Holdings[bundleId];
 
@@ -224,7 +228,7 @@ contract AssetWrapper is
         for (uint256 i = 0; i < erc721Holdings.length; i++) {
             IERC721(erc721Holdings[i].tokenAddress).safeTransferFrom(
                 _msgSender(),
-                bundles[bundleId].owner,
+                bundles[bundleId].og,
                 erc721Holdings[i].tokenId
             );
         }
@@ -234,7 +238,7 @@ contract AssetWrapper is
         for (uint256 i = 0; i < erc1155Holdings.length; i++) {
             IERC1155(erc1155Holdings[i].tokenAddress).safeTransferFrom(
                 _msgSender(),
-                bundles[bundleId].owner,
+                bundles[bundleId].og,
                 erc1155Holdings[i].tokenId,
                 erc1155Holdings[i].amount,
                 ""

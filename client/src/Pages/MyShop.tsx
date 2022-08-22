@@ -37,7 +37,7 @@ const MyShop = () => {
 
     const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
 
-    const indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON_MUMBAI)
+    const indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON)
     if(sequenceWallet.account) {
       const wrappedNFTs = await indexer.getTokenBalances({
         accountAddress: sequenceWallet.account,

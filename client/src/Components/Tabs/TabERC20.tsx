@@ -76,7 +76,7 @@ const TabERC20: React.FC<Prop> = (prop: Prop) => {
     }
   }
 
-  const { data = [] } = useFetch(`https://deep-index.moralis.io/api/v2/${account}/erc20?chain=mumbai&format=decimal`, options, [])
+  const { data = [] } = useFetch(`https://deep-index.moralis.io/api/v2/${account}/erc20?chain=polygon&format=decimal`, options, [])
   
   return (
     <div>

@@ -87,7 +87,7 @@ const TabNFT: React.FC<Prop> = (prop: Prop) => {
     }
   }
 
-  const { data = [] } = useFetch(`https://deep-index.moralis.io/api/v2/${account}/nft?chain=mumbai&format=decimal`, options, [])
+  const { data = [] } = useFetch(`https://deep-index.moralis.io/api/v2/${account}/nft?chain=polygon&format=decimal`, options, [])
   
   return (
     <div>

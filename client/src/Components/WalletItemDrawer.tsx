@@ -55,7 +55,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
     (async () => {
       if(loaded) return
 
-      indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON_MUMBAI)
+      indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON)
       if(ether.account) {
         // console.log('account: ', ether.account)
         const tokens = await indexer.getTokenBalances({
@@ -73,7 +73,7 @@ const WalletItemDrawer: React.FC<Prop> = (prop: Prop) => {
             symbol: asset.contractInfo?.symbol,
             chain: {
               id: asset.chainId,
-              name: 'mumbai'
+              name: 'polygon'
             }
           } as AssetModel
         }))
