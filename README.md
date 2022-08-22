@@ -2,8 +2,12 @@
 
 Bazaar zero is a decentralized trustless distributed digital marketplace network using Zero Knowledge Proof, Sequence Wallet & Fluence Network on Polygon.
 
+**Architecture**
 ![Bazaar Zero Architecture](/img/Bazaar_Zero.png "Bazaar Zero Architecture")
+**Asset Wrapper**
 ![Bazaar Zero Asset Wrapper](/img/Bazaar_Zero2.png "Bazaar Zero Asset Wrapper")
+**Zero Knowledge Proof**
+![Bazaar Zero ZKP](/img/Bazaar_Zero3.png "Bazaar Zero ZKP")
 
 ## Problem statement
 - Seller need more secure platform to sell their digital products without exposing private information such as keys
