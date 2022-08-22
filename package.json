@@ -4,7 +4,8 @@
   "description": "Bazaar Zero",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "reset": "sudo rm -rf node_modules && sudo rm -rf client/node_modules && sudo rm yarn.lock"
   },
   "author": "",
   "license": "ISC",
