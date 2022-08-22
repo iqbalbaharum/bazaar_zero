@@ -26,66 +26,67 @@ const MyShop = () => {
   const sequenceWallet = useSequence()
 
   useEffect(() => {
-    
-    (async () => {
-      if(loaded) return
-
-      const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-
-      const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
-
-      const indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON_MUMBAI)
-      if(sequenceWallet.account) {
-        const wrappedNFTs = await indexer.getTokenBalances({
-          accountAddress: sequenceWallet.account,
-          includeMetadata: true,
-          contractAddress: process.env.REACT_APP_CONTRACT_ASSET_WRAPPER
-        })
-
-        const arrAssets: any = []
-        for (let asset of wrappedNFTs.balances) {
-          const bundles = await contract.getBundles(asset.tokenID)
-
-          console.log({bundles})
-          arrAssets.push({...asset, bundles: {
-            price: ethers.utils.formatEther(bundles.price),
-            bundleERC20: bundles.bundleERC20.map(m => {
-              return {
-                amount: ethers.utils.formatEther(m.amount),
-                tokenAddress: m.tokenAddress,
-                title: m.title
-              }
-            }),
-            bundleERC721: bundles.bundleERC721.map(m => {
-              return {
-                tokenId: m.tokenId.toString(),
-                tokenAddress: m.tokenAddress,
-                title: m.title
-              }
-            }),
-            bundleERC1155: bundles.bundleERC1155.map(m => {
-              return {
-                tokenId: m.tokenId.toString(),
-                tokenAddress: m.tokenAddress,
-                title: m.title,
-                amount: m.amount.toString()
-              }
-            })
-          }})
-        }
-        setNFTs(arrAssets)
-        console.log({arrAssets})
-        setLoaded(true)
-      }
-
-    }) ()
-
+    loadData()
   }, [sequenceWallet, loaded])
+
+  const loadData = async () => {
+    if(loaded) return
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
+
+    const indexer = new sequence.indexer.SequenceIndexerClient(sequence.indexer.SequenceIndexerServices.POLYGON_MUMBAI)
+    if(sequenceWallet.account) {
+      const wrappedNFTs = await indexer.getTokenBalances({
+        accountAddress: sequenceWallet.account,
+        includeMetadata: true,
+        contractAddress: process.env.REACT_APP_CONTRACT_ASSET_WRAPPER
+      })
+
+      const arrAssets: any = []
+      for (let asset of wrappedNFTs.balances) {
+        const bundles = await contract.getBundles(asset.tokenID)
+
+        console.log({bundles})
+        arrAssets.push({...asset, bundles: {
+          price: ethers.utils.formatEther(bundles.price),
+          bundleERC20: bundles.bundleERC20.map(m => {
+            return {
+              amount: ethers.utils.formatEther(m.amount),
+              tokenAddress: m.tokenAddress,
+              title: m.title
+            }
+          }),
+          bundleERC721: bundles.bundleERC721.map(m => {
+            return {
+              tokenId: m.tokenId.toString(),
+              tokenAddress: m.tokenAddress,
+              title: m.title
+            }
+          }),
+          bundleERC1155: bundles.bundleERC1155.map(m => {
+            return {
+              tokenId: m.tokenId.toString(),
+              tokenAddress: m.tokenAddress,
+              title: m.title,
+              amount: m.amount.toString()
+            }
+          })
+        }})
+      }
+      setNFTs(arrAssets)
+      console.log({arrAssets})
+      setLoaded(true)
+    }
+
+  }
 
   const handleClose = () => {
     isOpen(false)
+    loadData()
   }
 
   const toggleDrawer = (bundleId: string) => {

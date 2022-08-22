@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Alignment, Classes, Navbar, NavbarGroup, NavbarDivider, Button, NavbarHeading, Icon } from '@blueprintjs/core'
 import useSequence from '../Hook/useSequence';
 import { ETHAuth } from '@0xsequence/ethauth'
@@ -18,7 +18,7 @@ const Navigation = () => {
 
   const navigate = useNavigate() 
 
-  const { account } = useSequence()
+  const sequenceWallet = useSequence()
   const ethers = useEthers()
 
   const [isFluenceConnected, setIsFluenceConnected] = useState(false)
@@ -102,13 +102,19 @@ const Navigation = () => {
     }
   }
 
+  const SequenceWalletConnectedDisplay = () => {
+    return (
+      <Button intent="success" onClick={() => sequenceWallet.wallet?.openWallet()} text={sequenceWallet.account} />
+    )
+  }
+
   return (
     <Navbar>
       <NavbarGroup align={Alignment.LEFT}>
         <img height={40} src={logo} alt="Bazaar Zero" onClick={() => navigate('/my')}/>
         {/* <Button className={Classes.MINIMAL} text="Wrapper" onClick={() => navigate('/wrapping')}/> */}
         <NavbarDivider />
-        Sequence <br /> {account ? account : <Button intent="primary" text="Login" onClick={onHandleSequenceWallet} /> }
+        {sequenceWallet.account ? <SequenceWalletConnectedDisplay /> : <Button text="Sequence Login" onClick={onHandleSequenceWallet} /> }
         <NavbarDivider />
         Polygon <br /> {ethers.account ? ethers.account : <Button intent="primary" text="Connect Metamask" onClick={() => ethers.activateBrowserWallet()} /> }
         <NavbarDivider />

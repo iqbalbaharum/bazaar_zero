@@ -72,19 +72,23 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
                               proof.solidityProof
                             )
 
-      var gas_estimate = await initBundle.estimateGas({ from: account })
-      gas_estimate = Math.round(gas_estimate * 1.2); 
+      // var gas_estimate = await initBundle.estimateGas({ from: account })
+      // gas_estimate = Math.round(gas_estimate * 1.2); 
         
-      console.log({gas_price, gas_estimate})
+      // console.log({gas_price, gas_estimate})
       
       setState(e => ({
         ...e,
         minting: true
       }))
 
-      await initBundle.wait()
+      await handleApproval()
 
-
+      setState(e => ({
+        ...e,
+        approving: true,
+        process: 'END'
+      }))
 
     } catch (e) {
       console.log(e)
@@ -93,11 +97,17 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
         verified: false,
         minting: false,
         approving: false,
-        errorText: (e as any).error.message as string
+        errorText: (e as any).toString()
       })
 
       console.log(state)
     }
+  }
+
+  const handleApproval = async () => {
+    const signer = sequenceWallet.wallet?.getSigner()
+    const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
+    await contract.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true)
   }
 
   const handleClose = () => {
