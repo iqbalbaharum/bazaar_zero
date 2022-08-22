@@ -44,7 +44,7 @@ interface IAssetWrapper {
      *
      * See {ERC721-_mint}.
      */
-    function initializeBundle(address to, uint256 groupId, bytes32 signal, uint256 _nullifierHash,
+    function initializeBundle(address to, uint256 groupId, string memory title, string memory description, bytes32 signal, uint256 _nullifierHash,
         uint256[8] calldata _proof) external returns (uint256);
 
     /**
