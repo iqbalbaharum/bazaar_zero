@@ -27,9 +27,11 @@ const Search = () => {
 
     if(!Fluence.getStatus().isConnected) { return }
 
+    setProducts([])
+    
     setIsLoading(true)
     let res = await retrieve_products_by_keyword_from_network(
-      "DOSASeller12D3KooWFFNCaJMb4TuQpAZbdAuk18H95e8acjQcFL2RWuJppS8o",
+      "DosaSeller12D3KooWD5BRx2Ly9Gfw9hsYoZGcwAN4QpEND8SXVd5GSejZmZ65",
       search
     )
     console.log(res)
@@ -100,7 +102,9 @@ const Search = () => {
               <ListedProductBox
                 title={asset.title as string}
                 description={`Bundle #${asset.id}`}
-                onClick={() => onHandlePurchase(asset)} />
+                onClick={() => onHandlePurchase(asset)}
+                asset={asset}
+              />
             </Col>
           )
         })}

@@ -31,7 +31,7 @@ func retrieve_products_by_keyword_from_network(resource_id: string, keyword: str
   
   join responses[19]
   -- To prevent from the dead peer, do race pattern
-  par Peer.timeout(7000, "timeout")
+  par Peer.timeout(15000, "timeout")
 
   <- products
 
@@ -53,6 +53,6 @@ func retrieve_products_from_network(resource_id: string) -> []Product :
   
   join responses[19]
   -- To prevent from the dead peer, do race pattern
-  par Peer.timeout(7000, "timeout")
+  par Peer.timeout(15000, "timeout")
 
   <- products

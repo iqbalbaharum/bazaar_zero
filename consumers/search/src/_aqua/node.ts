@@ -22,13 +22,13 @@ import {
 export function retrieve_products_from_network(
     resource_id: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+): Promise<{ address: string; bundleERC1155: { amount: string; title: string; tokenAddress: string; }[]; bundleERC20: { amount: string; title: string; tokenAddress: string; }[]; bundleERC721: { amount: string; title: string; tokenAddress: string; }[]; id: string; peerId: string; price: number; title: string; }[]>;
 
 export function retrieve_products_from_network(
     peer: FluencePeer,
     resource_id: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+): Promise<{ address: string; bundleERC1155: { amount: string; title: string; tokenAddress: string; }[]; bundleERC20: { amount: string; title: string; tokenAddress: string; }[]; bundleERC721: { amount: string; title: string; tokenAddress: string; }[]; id: string; peerId: string; price: number; title: string; }[]>;
 
 export function retrieve_products_from_network(...args: any) {
 
@@ -206,7 +206,7 @@ export function retrieve_products_from_network(...args: any) {
                            )
                            (par
                             (call %init_peer_id% ("op" "noop") [$responses.$.[19]!])
-                            (call %init_peer_id% ("peer" "timeout") [7000 "timeout"])
+                            (call %init_peer_id% ("peer" "timeout") [15000 "timeout"])
                            )
                           )
                           (call %init_peer_id% ("op" "identity") [$products] products-fix)
@@ -258,11 +258,74 @@ export function retrieve_products_from_network(...args: any) {
                                 "tag" : "scalar",
                                 "name" : "string"
                             },
-                            "address" : {
+                            "bundleERC721" : {
+                                "tag" : "array",
+                                "type" : {
+                                    "tag" : "struct",
+                                    "name" : "Bundle",
+                                    "fields" : {
+                                        "amount" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "title" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "tokenAddress" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "title" : {
                                 "tag" : "scalar",
                                 "name" : "string"
                             },
-                            "title" : {
+                            "bundleERC1155" : {
+                                "tag" : "array",
+                                "type" : {
+                                    "tag" : "struct",
+                                    "name" : "Bundle",
+                                    "fields" : {
+                                        "amount" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "title" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "tokenAddress" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "bundleERC20" : {
+                                "tag" : "array",
+                                "type" : {
+                                    "tag" : "struct",
+                                    "name" : "Bundle",
+                                    "fields" : {
+                                        "amount" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "title" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "tokenAddress" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "address" : {
                                 "tag" : "scalar",
                                 "name" : "string"
                             }
@@ -292,14 +355,14 @@ export function retrieve_products_by_keyword_from_network(
     resource_id: string,
     keyword: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+): Promise<{ address: string; bundleERC1155: { amount: string; title: string; tokenAddress: string; }[]; bundleERC20: { amount: string; title: string; tokenAddress: string; }[]; bundleERC721: { amount: string; title: string; tokenAddress: string; }[]; id: string; peerId: string; price: number; title: string; }[]>;
 
 export function retrieve_products_by_keyword_from_network(
     peer: FluencePeer,
     resource_id: string,
     keyword: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[]>;
+): Promise<{ address: string; bundleERC1155: { amount: string; title: string; tokenAddress: string; }[]; bundleERC20: { amount: string; title: string; tokenAddress: string; }[]; bundleERC721: { amount: string; title: string; tokenAddress: string; }[]; id: string; peerId: string; price: number; title: string; }[]>;
 
 export function retrieve_products_by_keyword_from_network(...args: any) {
 
@@ -480,7 +543,7 @@ export function retrieve_products_by_keyword_from_network(...args: any) {
                            )
                            (par
                             (call %init_peer_id% ("op" "noop") [$responses.$.[19]!])
-                            (call %init_peer_id% ("peer" "timeout") [7000 "timeout"])
+                            (call %init_peer_id% ("peer" "timeout") [15000 "timeout"])
                            )
                           )
                           (call %init_peer_id% ("op" "identity") [$products] products-fix)
@@ -536,11 +599,74 @@ export function retrieve_products_by_keyword_from_network(...args: any) {
                                 "tag" : "scalar",
                                 "name" : "string"
                             },
-                            "address" : {
+                            "bundleERC721" : {
+                                "tag" : "array",
+                                "type" : {
+                                    "tag" : "struct",
+                                    "name" : "Bundle",
+                                    "fields" : {
+                                        "amount" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "title" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "tokenAddress" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "title" : {
                                 "tag" : "scalar",
                                 "name" : "string"
                             },
-                            "title" : {
+                            "bundleERC1155" : {
+                                "tag" : "array",
+                                "type" : {
+                                    "tag" : "struct",
+                                    "name" : "Bundle",
+                                    "fields" : {
+                                        "amount" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "title" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "tokenAddress" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "bundleERC20" : {
+                                "tag" : "array",
+                                "type" : {
+                                    "tag" : "struct",
+                                    "name" : "Bundle",
+                                    "fields" : {
+                                        "amount" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "title" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        },
+                                        "tokenAddress" : {
+                                            "tag" : "scalar",
+                                            "name" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "address" : {
                                 "tag" : "scalar",
                                 "name" : "string"
                             }
@@ -569,13 +695,13 @@ export function retrieve_products_by_keyword_from_network(...args: any) {
 export function get_products_from_peer(
     peerId: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[][]>;
+): Promise<{ address: string; bundleERC1155: { amount: string; title: string; tokenAddress: string; }[]; bundleERC20: { amount: string; title: string; tokenAddress: string; }[]; bundleERC721: { amount: string; title: string; tokenAddress: string; }[]; id: string; peerId: string; price: number; title: string; }[][]>;
 
 export function get_products_from_peer(
     peer: FluencePeer,
     peerId: string,
     config?: {ttl?: number}
-): Promise<{ address: string; id: string; peerId: string; price: number; title: string; }[][]>;
+): Promise<{ address: string; bundleERC1155: { amount: string; title: string; tokenAddress: string; }[]; bundleERC20: { amount: string; title: string; tokenAddress: string; }[]; bundleERC721: { amount: string; title: string; tokenAddress: string; }[]; id: string; peerId: string; price: number; title: string; }[][]>;
 
 export function get_products_from_peer(...args: any) {
 
@@ -661,11 +787,74 @@ export function get_products_from_peer(...args: any) {
                                     "tag" : "scalar",
                                     "name" : "string"
                                 },
-                                "address" : {
+                                "bundleERC721" : {
+                                    "tag" : "array",
+                                    "type" : {
+                                        "tag" : "struct",
+                                        "name" : "Bundle",
+                                        "fields" : {
+                                            "amount" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            },
+                                            "title" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            },
+                                            "tokenAddress" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "title" : {
                                     "tag" : "scalar",
                                     "name" : "string"
                                 },
-                                "title" : {
+                                "bundleERC1155" : {
+                                    "tag" : "array",
+                                    "type" : {
+                                        "tag" : "struct",
+                                        "name" : "Bundle",
+                                        "fields" : {
+                                            "amount" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            },
+                                            "title" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            },
+                                            "tokenAddress" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "bundleERC20" : {
+                                    "tag" : "array",
+                                    "type" : {
+                                        "tag" : "struct",
+                                        "name" : "Bundle",
+                                        "fields" : {
+                                            "amount" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            },
+                                            "title" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            },
+                                            "tokenAddress" : {
+                                                "tag" : "scalar",
+                                                "name" : "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "address" : {
                                     "tag" : "scalar",
                                     "name" : "string"
                                 }
