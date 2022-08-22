@@ -1,10 +1,19 @@
 import "@fluencelabs/aqua-lib/builtin.aqua"
 
+data Bundle:
+  amount: string
+  tokenAddress: string
+  title: string
+
 data Product:
   address: string
   id: string
   title: string
   price: u32
+  peerId: string
+  bundleERC20: []Bundle
+  bundleERC721: []Bundle
+  bundleERC1155: []Bundle
 
 service ShopService("shopservice"):
   list() -> []Product

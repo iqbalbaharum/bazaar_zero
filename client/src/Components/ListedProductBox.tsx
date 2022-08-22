@@ -55,8 +55,6 @@ const ListedProductBox: React.FC<AssetDataProp> = (prop: AssetDataProp) => {
     getBundleData()
   }, [])
 
-  console.log(prop.asset.bundles)
-
   const onSell = async (bundleId, price) => {
     try {
       const signer = sequenceWallet.wallet?.getSigner()

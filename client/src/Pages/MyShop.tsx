@@ -13,7 +13,6 @@ import useSequence from '../Hook/useSequence';
 import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
 
 import logo from '../assets/zero-1.png';
-import BundleDrawer from '../Components/BundleDrawer';
 
 const MyShop = () => {
 
@@ -50,7 +49,6 @@ const MyShop = () => {
       for (let asset of wrappedNFTs.balances) {
         const bundles = await contract.getBundles(asset.tokenID)
 
-        console.log({bundles})
         arrAssets.push({...asset, bundles: {
           price: ethers.utils.formatEther(bundles.price),
           bundleERC20: bundles.bundleERC20.map(m => {
@@ -78,7 +76,6 @@ const MyShop = () => {
         }})
       }
       setNFTs(arrAssets)
-      console.log({arrAssets})
       setLoaded(true)
     }
 

@@ -6,12 +6,20 @@ const RELAY ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
 const SEMAPHORE_SERVICE_ID ?= "semaphoreservice"
 const SHOP_SERVICE_ID ?= "shopservice"
 
+data Bundle:
+  amount: string
+  tokenAddress: string
+  title: string
+
 data Product:
   address: string
   id: string
   title: string
   price: u32
   peerId: string
+  bundleERC20: []Bundle
+  bundleERC721: []Bundle
+  bundleERC1155: []Bundle
 
 service ShopService("shopservice"):
   list() -> []Product

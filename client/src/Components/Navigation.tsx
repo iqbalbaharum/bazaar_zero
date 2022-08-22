@@ -28,9 +28,12 @@ const Navigation = () => {
     let id: any
     
     const registerDiscovery = async () => {
+      
+      // const resource = await createResource('DosaSeller')
+      // console.log(resource)
 
       const [success, error] = await registerProvider(
-        "DOSASeller12D3KooWFFNCaJMb4TuQpAZbdAuk18H95e8acjQcFL2RWuJppS8o",
+        "DosaSeller12D3KooWD5BRx2Ly9Gfw9hsYoZGcwAN4QpEND8SXVd5GSejZmZ65",
         "Seller",
         "shopservice");
     }
