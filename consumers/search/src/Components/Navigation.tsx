@@ -24,7 +24,7 @@ const Navigation = () => {
 
         Fluence.start({ 
           connectTo: krasnodar[0],
-          defaultTtlMs: 30000
+          defaultTtlMs: 100000
         })
           .then(() => {
             clearInterval(id);
