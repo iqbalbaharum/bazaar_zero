@@ -3,6 +3,7 @@ import {useState, useCallback} from 'react'
 import {Dialog, Button, Classes} from '@blueprintjs/core'
 import { ethers } from 'ethers'
 import AssetWrapperAbi from "../artifacts/AssetWrapper.json"
+import useSequence from '../Hook/useSequence';
 
 type Prop = {
   bundleId: string
@@ -12,6 +13,7 @@ const WithdrawButtonWithDialog: React.FC<Prop> = (prop: Prop) => {
   
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const sequenceWallet = useSequence()
   
   const handleClose = useCallback(() => setIsOpen(false), [])
   const handleButtonClick = useCallback(() => {
@@ -19,16 +21,22 @@ const WithdrawButtonWithDialog: React.FC<Prop> = (prop: Prop) => {
   }, [])
 
   const onHandleConfirm = async () => {
+
+    if(!sequenceWallet.wallet) { return }
+    
     setIsLoading(true)
-    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner();
-
+    const signer = await sequenceWallet.wallet.getSigner()
     const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER as string, AssetWrapperAbi.abi, signer)
-    const gas = contract.estimateGas.withdraw(parseInt(prop.bundleId))
+    const estimate = await contract.estimateGas.withdraw(parseInt(prop.bundleId))
 
-    console.log(gas)
+    const tx = await contract.withdraw(parseInt(prop.bundleId), {
+      gasLimit: Math.round(estimate.toNumber() * 2)
+    })
+
+    await tx.wait()
+
     setIsLoading(false)
+    setIsOpen(false)
   }
 
   const DialogFooter = () => {

@@ -29,6 +29,7 @@
   width: 100%;
   display: flex;
   background-color: 'white';
+  margin-top: 30px;
   box-shadow: 0 0 0 1px rgb(17 20 24 / 10%), 0 4px 8px rgb(17 20 24 / 20%), 0 18px 46px 6px rgb(17 20 24 / 20%);
 }
 

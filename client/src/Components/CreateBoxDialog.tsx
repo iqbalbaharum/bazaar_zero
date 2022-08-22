@@ -20,7 +20,8 @@ interface MintingState {
   verified: Boolean,
   minting: Boolean,
   approving: Boolean,
-  errorText?: string
+  errorText?: string,
+  proof?: string
 }
 
 const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
@@ -29,7 +30,8 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
     process: 'START',
     verified: false,
     minting: false,
-    approving: false
+    approving: false,
+    proof: ''
   })
 
   const sequenceWallet = useSequence()
@@ -57,7 +59,8 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
 
       setState(e => ({
         ...e,
-        verified: true
+        verified: true,
+        proof: proof.byteSignal.toString()
       }))
 
       const gasPrice = await provider.getGasPrice()
@@ -163,9 +166,10 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
   function DialogFooter(props: { handleClose: (e: React.MouseEvent) => void }) {
     return (
         <div className={Classes.DIALOG_FOOTER}>
+            <div className="bp4-text-small bp4-monospace-text bp4-text-overflow-ellipsis">{state.proof ? state.proof : '' }</div>
             {state.errorText && <span style={{ color: 'red' }}>{state.errorText}</span>}
             <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-              <Button intent="success" onClick={mint} loading={state.process === 'PROCESS'}>Mint NFT</Button>
+              {(state.process === 'START' || state.process === 'PROCESS') && <Button intent="success" onClick={mint} loading={state.process === 'PROCESS'}>Mint NFT</Button>}
               <Button onClick={props.handleClose} disabled={state.process === 'PROCESS'}>Close</Button>
             </div>
         </div>
