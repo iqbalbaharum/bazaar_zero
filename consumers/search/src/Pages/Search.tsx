@@ -53,7 +53,7 @@ const Search = () => {
 
       const estimate = await contract.estimateGas.buy(
         parseInt(asset.id),
-        { value: ethers.utils.parseEther("1")  }
+        { value: ethers.utils.parseEther(`${asset.price}`)  }
       )
 
       console.log('contract')
@@ -68,7 +68,7 @@ const Search = () => {
         {
           gasPrice: gas_price,
           gasLimit: Math.round(estimate.toNumber() * 2),
-          value: ethers.utils.parseEther("1") 
+          value: ethers.utils.parseEther(`${asset.price}`) 
         }
       )
     } catch(e) {

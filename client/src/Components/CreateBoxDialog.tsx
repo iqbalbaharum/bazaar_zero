@@ -70,6 +70,8 @@ const CreateBoxDialog: React.FC<Prop> = (prop: Prop) => {
                             .initializeBundle(
                               sequenceWallet.account, 
                               groupId,
+                              'Bundle 1',
+                              'Bundle 1',
                               proof.byteSignal,
                               proof.fullProof.publicSignals.nullifierHash,
                               proof.solidityProof

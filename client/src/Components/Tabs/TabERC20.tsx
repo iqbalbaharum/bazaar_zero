@@ -54,10 +54,10 @@ const TabERC20: React.FC<Prop> = (prop: Prop) => {
         await appContract.approve(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, parseAmt)
       }
 
-      let allowanceInSequenceWallet = await appContract.allowance(account, sequenceWallet.account)
+      let allowanceInSequenceWallet = await appContract.allowance(sequenceWallet.account, process.env.REACT_APP_CONTRACT_ASSET_WRAPPER)
 
       if(allowanceInSequenceWallet <= 0) {
-        await contractSequenceSigner.approve(sequenceWallet.account, parseAmt)
+        await contractSequenceSigner.approve(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, parseAmt)
       }
 
       estimate = await contract.estimateGas.depositERC20(data.token_address, parseAmt, prop.selectedBundleId, data.symbol)

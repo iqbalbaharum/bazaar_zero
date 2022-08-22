@@ -39,20 +39,18 @@ const TabNFT: React.FC<Prop> = (prop: Prop) => {
       const gas_price = Math.round(gasPrice.toNumber() * 1.2)
       console.log({ gas_price })
 
-      let appContract: Contract
+      let appContract: Contract, seqContract: Contract
 
       if(data.contract_type === 'ERC721') {
         appContract = new ethers.Contract(data.token_address as string, erc721abi, signer)
+        seqContract = new ethers.Contract(data.token_address as string, erc721abi, sequenceWallet.wallet?.getSigner())
       } else {
         appContract = new ethers.Contract(data.token_address as string, erc1155abi, signer)
+        seqContract = new ethers.Contract(data.token_address as string, erc1155abi, sequenceWallet.wallet?.getSigner())
       }
 
       if(!await appContract.isApprovedForAll(account, process.env.REACT_APP_CONTRACT_ASSET_WRAPPER)) {
         await appContract.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true)
-      }
-
-      if(!await appContract.isApprovedForAll(account, sequenceWallet.account)) {
-        await appContract.setApprovalForAll(sequenceWallet.account, true)
       }
 
       let tx
@@ -73,6 +71,10 @@ const TabNFT: React.FC<Prop> = (prop: Prop) => {
       }
 
       await tx.wait()
+
+      if(!await seqContract.isApprovedForAll(sequenceWallet.account, process.env.REACT_APP_CONTRACT_ASSET_WRAPPER)) {
+        await seqContract.setApprovalForAll(process.env.REACT_APP_CONTRACT_ASSET_WRAPPER, true)
+      }
 
     } catch(e) {
       console.log(e)
